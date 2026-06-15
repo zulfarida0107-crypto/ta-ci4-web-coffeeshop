@@ -25,14 +25,26 @@ class Home extends BaseController
         
         if (empty($menuItems)) {
             $menuItems = [
-                ['img' => '1.jpg', 'alt' => 'Espresso', 'title' => 'Espresso', 'price' => 'IDR 15K'],
-                ['img' => '2.jpg', 'alt' => 'Cappuccino', 'title' => 'Cappuccino', 'price' => 'IDR 25K'],
-                ['img' => '3.jpg', 'alt' => 'Latte', 'title' => 'Latte', 'price' => 'IDR 28K'],
-                ['img' => '4.jpg', 'alt' => 'Americano', 'title' => 'Americano', 'price' => 'IDR 18K'],
-                ['img' => '5.jpg', 'alt' => 'Mocha', 'title' => 'Mocha', 'price' => 'IDR 30K'],
-                ['img' => '6.jpg', 'alt' => 'Macchiato', 'title' => 'Macchiato', 'price' => 'IDR 20K'],
+                ['img' => '1.jpg', 'alt' => 'Espresso', 'title' => 'Espresso', 'price' => 'IDR 15K', 'bagian' => 'Menu Kami'],
+                ['img' => '2.jpg', 'alt' => 'Cappuccino', 'title' => 'Cappuccino', 'price' => 'IDR 25K', 'bagian' => 'Menu Kami'],
+                ['img' => '3.jpg', 'alt' => 'Latte', 'title' => 'Latte', 'price' => 'IDR 28K', 'bagian' => 'Menu Kami'],
+                ['img' => '4.jpg', 'alt' => 'Americano', 'title' => 'Americano', 'price' => 'IDR 18K', 'bagian' => 'Menu Kami'],
+                ['img' => '5.jpg', 'alt' => 'Mocha', 'title' => 'Mocha', 'price' => 'IDR 30K', 'bagian' => 'Menu Kami'],
+                ['img' => '6.jpg', 'alt' => 'Macchiato', 'title' => 'Macchiato', 'price' => 'IDR 20K', 'bagian' => 'Menu Kami'],
             ];
+            $menuKami = $menuItems;
+            $produkUnggulan = [];
         } else {
+            // Filter out products with category "Kue Custom" (case-insensitive)
+            $filteredItems = [];
+            foreach ($menuItems as $item) {
+                if (isset($item['kategori']) && strcasecmp(trim($item['kategori']), 'kue custom') === 0) {
+                    continue;
+                }
+                $filteredItems[] = $item;
+            }
+            $menuItems = $filteredItems;
+
             // Format ulang harga jika dari API
             foreach ($menuItems as &$item) {
                 $gambar = $item['gambar'] ?? '';
@@ -59,11 +71,24 @@ class Home extends BaseController
                 $harga = $item['harga'] ?? 0;
                 $item['price'] = 'IDR ' . number_format($harga / 1000, 0) . 'K';
             }
+            unset($item);
+
+            $menuKami = [];
+            $produkUnggulan = [];
+            foreach ($menuItems as $item) {
+                $bagian = isset($item['bagian']) ? $item['bagian'] : 'Menu Kami';
+                if ($bagian === 'Produk Unggulan') {
+                    $produkUnggulan[] = $item;
+                } else {
+                    $menuKami[] = $item;
+                }
+            }
         }
 
         $data = [
             'navLinks' => $navLinks,
-            'menuItems' => $menuItems
+            'menuKami' => $menuKami,
+            'produkUnggulan' => $produkUnggulan
         ];
 
         return view('customer/home', $data);

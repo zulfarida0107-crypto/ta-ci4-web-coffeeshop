@@ -16,6 +16,10 @@
 
   <link rel="stylesheet" href="<?= base_url('css/style.css'); ?>" />
 
+  <script>
+    window.unggulanProducts = <?= json_encode($produkUnggulan); ?>;
+    window.menuKamiProducts = <?= json_encode($menuKami); ?>;
+  </script>
   <script defer src="<?= base_url('src/app.js'); ?>"></script>
 
   <!-- Alpine.js CDN -->
@@ -36,7 +40,7 @@
 
     <div class="navbar-extra">
       <a href="#" id="search-button"><i data-feather="search"></i></a>
-      <a href="#" id="shopping-cart-button">
+      <a href="#" id="shopping-cart-button" style="display: none !important;">
         <i data-feather="shopping-cart"></i>
         <span class="quantity-badge" x-show="$store.cart.quantity" x-text="$store.cart.quantity"></span>
       </a>
@@ -45,13 +49,22 @@
     </div>
 
     <div class="search-form">
-      <input type="search" id="search-box" placeholder="search here..." />
-      <label for="search-box"><i data-feather="search"></i></label>
+      <div style="display: flex; align-items: center; width: 100%; height: 5rem;">
+        <input type="search" id="search-box" placeholder="search here..." style="width: 100%; height: 100%; border: none;" />
+        <label for="search-box"><i data-feather="search" style="color: var(--bg);"></i></label>
+      </div>
+      <div class="search-filters" style="display: flex; gap: 8px; width: 100%; padding: 8px 0; justify-content: flex-start; border-top: 1px solid #eee; margin-top: 5px;">
+        <span style="color: #666; font-size: 1.2rem; align-self: center; margin-right: 4px;">Filter:</span>
+        <button type="button" class="filter-shortcut-btn" :class="$store.filter.category === 'Kopi' ? 'active' : ''" @click="$store.filter.setCategory('Kopi'); document.getElementById('search-box').value = ''; window.pendingKeyword = ''; resetAllHighlight();">Kopi</button>
+        <button type="button" class="filter-shortcut-btn" :class="$store.filter.category === 'Non-Kopi' ? 'active' : ''" @click="$store.filter.setCategory('Non-Kopi'); document.getElementById('search-box').value = ''; window.pendingKeyword = ''; resetAllHighlight();">Non-Kopi</button>
+        <button type="button" class="filter-shortcut-btn" :class="$store.filter.category === 'Pastry' ? 'active' : ''" @click="$store.filter.setCategory('Pastry'); document.getElementById('search-box').value = ''; window.pendingKeyword = ''; resetAllHighlight();">Pastry</button>
+        <button type="button" class="filter-shortcut-btn" :class="$store.filter.category === 'Semua' ? 'active' : ''" @click="$store.filter.setCategory('Semua'); document.getElementById('search-box').value = ''; window.pendingKeyword = ''; resetAllHighlight();">Semua</button>
+      </div>
     </div>
     <div class="shopping-cart">
       <template x-for="(item, index) in $store.cart.items" x-key="index">
         <div class="cart-item">
-          <img :src="`<?= base_url('img/products/') ?>${item.img}`" :alt="item.name" />
+          <img :src="getProductImgSrc(item.img)" :alt="item.name" />
           <div class="item-detail">
             <h3 x-text="item.name"></h3>
             <div class="item-price">
@@ -101,72 +114,55 @@
       </div>
     </div>
   </section>
-  <section id="menu" class="menu">
+  <section id="menu" class="menu" x-data="menu">
     <h2><span>Menu </span>Kami</h2>
     <p>Pilihan kopi terbaik untuk memuaskan selera Anda</p>
     <div class="row">
-      <?php foreach ($menuItems as $item): ?>
+      <template x-for="(item, index) in items" :key="index">
         <div class="menu-card">
-          <img src="<?= isset($item['img_src']) ? $item['img_src'] : base_url('img/menu/' . $item['img']); ?>" alt="<?= $item['alt']; ?>" class="menu-card-img" />
-          <h3 class="menu-card-title">- <?= $item['title']; ?> -</h3>
-          <p class="menu-card-price"><?= $item['price']; ?></p>
+          <img :src="getMenuImgSrc(item.img, item.img_src)" :alt="item.name" class="menu-card-img" @click.prevent="$store.modal.open(item)" style="cursor: pointer;" />
+          <h3 class="menu-card-title">- <span x-text="item.name"></span> -</h3>
+          <p class="menu-card-price" x-text="'IDR ' + Math.floor(item.price / 1000) + 'K'"></p>
         </div>
-      <?php endforeach; ?>
+      </template>
     </div>
+    <template x-if="totalPages > 1">
+      <div class="pagination-container">
+        <button @click="prevPage()" :disabled="currentPage === 1" class="page-btn">&laquo;</button>
+        <template x-for="page in totalPages" :key="page">
+          <button @click="goToPage(page)" :class="currentPage === page ? 'page-btn active' : 'page-btn'" x-text="page"></button>
+        </template>
+        <button @click="nextPage()" :disabled="currentPage === totalPages" class="page-btn">&raquo;</button>
+      </div>
+    </template>
   </section>
   <section class="products" id="products" x-data="products">
-    <h2><span>Produk Unggulan</span> Kami</h2>
+    <h2><span>Produk</span> Unggulan</h2>
     <p>Kami dengan bangga mempersembahkan produk kopi unggulan kami yang dibuat dengan cinta dan dedikasi. Setiap biji
       kopi dipilih dengan teliti untuk memastikan rasa yang lezat dan memuaskan.</p>
     <div class="row">
-      <template x-for="(item, index) in items" x-key="index">
+      <template x-for="(item, index) in items" :key="index">
         <div class="product-card">
-          <div class="product-icons">
-            <a href="#" @click.prevent="$store.cart.add(item)">
-              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round">
-                <use href="<?= base_url('img/feather-sprite.svg#shopping-cart') ?>" />
-              </svg>
-            </a>
-            <a href="#" @click.prevent="$store.modal.open(item)">
-              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round">
-                <use href="<?= base_url('img/feather-sprite.svg#eye') ?>" />
-              </svg>
-            </a>
-          </div>
           <div class="product-image">
-            <img :src="`<?= base_url('img/products/') ?>${item.img}`" :alt="item.name" />
+            <img :src="getProductImgSrc(item.img)" :alt="item.name" />
           </div>
           <div class="product-content">
             <h3 x-text="item.name"></h3>
-            <div class="product-stars">
-              <svg width="24" height="24" fill="currentColor" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <use href="<?= base_url('img/feather-sprite.svg#star') ?>" />
-              </svg>
-              <svg width="24" height="24" fill="currentColor" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <use href="<?= base_url('img/feather-sprite.svg#star') ?>" />
-              </svg>
-              <svg width="24" height="24" fill="currentColor" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <use href="<?= base_url('img/feather-sprite.svg#star') ?>" />
-              </svg>
-              <svg width="24" height="24" fill="currentColor" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <use href="<?= base_url('img/feather-sprite.svg#star') ?>" />
-              </svg>
-              <svg width="24" height="24" fill="currentColor" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <use href="<?= base_url('img/feather-sprite.svg#star') ?>" />
-              </svg>
-            </div>
             <div class="product-price"><span x-text="rupiah(item.price)"></span></div>
+            <a href="#" @click.prevent="$store.modal.open(item)" class="detail-button">Detail Informasi Produk</a>
           </div>
         </div>
       </template>
     </div>
+    <template x-if="totalPages > 1">
+      <div class="pagination-container">
+        <button @click="prevPage()" :disabled="currentPage === 1" class="page-btn">&laquo;</button>
+        <template x-for="page in totalPages" :key="page">
+          <button @click="goToPage(page)" :class="currentPage === page ? 'page-btn active' : 'page-btn'" x-text="page"></button>
+        </template>
+        <button @click="nextPage()" :disabled="currentPage === totalPages" class="page-btn">&raquo;</button>
+      </div>
+    </template>
   </section>
   <section id="contact" class="contact">
     <h2><span>Kontak </span>Kami</h2>
@@ -185,12 +181,12 @@
           <input type="email" name="email" placeholder="email" required />
         </div>
         <div class="input-group">
-          <i data-feather="phone"></i>
-          <input type="text" name="no_hp" placeholder="no hp" required />
+          <i data-feather="bookmark"></i>
+          <input type="text" name="subjek" placeholder="subjek" required />
         </div>
         <div class="input-group">
           <i data-feather="message-circle"></i>
-          <textarea name="isi_pesan" id="isi_pesan" placeholder="tulis pesan Anda..." rows="4" required></textarea>
+          <textarea name="pesan" id="pesan" placeholder="tulis pesan Anda..." rows="4" required></textarea>
         </div>
         <button type="submit" class="btn" id="kontak-submit-btn">kirim pesan</button>
       </form>
@@ -226,18 +222,12 @@
       <button type="button" class="close-icon" @click="$store.modal.close()"><i data-feather="x"></i></button>
       <template x-if="$store.modal.product">
         <div class="modal-content">
-          <img :src="`<?= base_url('img/products/') ?>${$store.modal.product.img}`" :alt="$store.modal.product.name" />
+          <img :src="$store.modal.product.img_src || getProductImgSrc($store.modal.product.img)" :alt="$store.modal.product.name" />
           <div class="product-content">
             <h3 x-text="$store.modal.product.name"></h3>
             <p x-text="$store.modal.product.desc"
               style="font-size:1.1rem;color:#555;margin:0.5rem 0 1rem;line-height:1.6;"></p>
-            <div class="product-stars" style="font-size:1.8rem;color:#b6895b;padding:0.5rem 0;">
-              ★★★★★
-            </div>
             <div class="product-price" x-text="rupiah($store.modal.product.price)"></div>
-            <a href="#" @click.prevent="$store.cart.add($store.modal.product)">
-              <i data-feather="shopping-cart"></i><span>tambah ke keranjang</span>
-            </a>
           </div>
         </div>
       </template>
@@ -245,6 +235,23 @@
   </div>
   <script>
     feather.replace();
+    
+    function getProductImgSrc(img) {
+      if (!img) return '<?= base_url('img/products/1.jpg') ?>';
+      if (img.startsWith('http://') || img.startsWith('https://') || img.startsWith('data:') || img.startsWith('/') || img.startsWith('content://')) {
+        return img;
+      }
+      return '<?= base_url('img/products/') ?>' + img;
+    }
+
+    function getMenuImgSrc(img, imgSrc) {
+      if (imgSrc) return imgSrc;
+      if (!img) return '<?= base_url('img/menu/1.jpg') ?>';
+      if (img.startsWith('http://') || img.startsWith('https://') || img.startsWith('data:') || img.startsWith('/') || img.startsWith('content://')) {
+        return img;
+      }
+      return '<?= base_url('img/menu/') ?>' + img;
+    }
   </script>
 
   <script src="<?= base_url('js/script.js'); ?>"></script>
@@ -286,14 +293,14 @@
         .then(function (response) {
           var txt = response.trim();
           if (txt.toLowerCase().includes('berhasil')) {
-            showToast('✅ Pesan berhasil terkirim! Kami akan segera menghubungi Anda.', 'success');
+            showToast('Pesan berhasil terkirim! Kami akan segera menghubungi Anda.', 'success');
             contactForm.reset();
           } else {
-            showToast('❌ Gagal mengirim pesan: ' + txt, 'error');
+            showToast('Gagal mengirim pesan: ' + txt, 'error');
           }
         })
         .catch(function () {
-          showToast('❌ Terjadi kesalahan koneksi. Silakan coba lagi.', 'error');
+          showToast('Terjadi kesalahan koneksi. Silakan coba lagi.', 'error');
         })
         .finally(function () {
           submitBtn.disabled    = false;

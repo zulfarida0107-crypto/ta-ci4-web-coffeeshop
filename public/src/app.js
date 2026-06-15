@@ -1,12 +1,102 @@
 document.addEventListener("alpine:init", () => {
+    // Global filter store
+    Alpine.store("filter", {
+        category: 'Semua',
+        setCategory(cat) {
+            this.category = cat;
+        }
+    });
+
+    let defaultItems = [
+        { id: 1, name: "Robusta Brazil",       img: "1.jpg", price: 20000, desc: "Biji kopi pilihan dari perkebunan Brazil dengan cita rasa nutty dan cokelat yang kuat. Sangrai medium, cocok untuk espresso dan pour-over.", kategori: "Kopi" },
+        { id: 2, name: "Arabika Blend",         img: "2.jpg", price: 25000, desc: "Perpaduan sempurna biji Arabika dari berbagai dataran tinggi Indonesia. Aroma floral yang memikat dengan keasaman lembut dan aftertaste manis.", kategori: "Kopi" },
+        { id: 3, name: "Primo Passo",           img: "3.jpg", price: 30000, desc: "Kopi spesialti single-origin dengan profil rasa fruity dan bright acidity. Sangrai light untuk menonjolkan karakter unik biji pilihan.", kategori: "Kopi" },
+        { id: 4, name: "Aceh Gayo",             img: "4.jpg", price: 35000, desc: "Kopi premium dari dataran tinggi Gayo, Aceh. Rasa earthy yang kompleks, body tebal, dan aroma rempah yang khas. Sangrai medium-dark.", kategori: "Kopi" },
+        { id: 5, name: "Sumatra Mandheling",    img: "5.jpg", price: 40000, desc: "Kopi ikonik dari Sumatera dengan body penuh dan rasa dark chocolate yang dalam. Proses wet-hulled menghasilkan profil rasa yang unik and bold.", kategori: "Kopi" },
+    ];
+    let items = defaultItems;
+    if (window.unggulanProducts && window.unggulanProducts.length > 0) {
+        items = window.unggulanProducts.map(item => ({
+            id: parseInt(item.id),
+            name: item.namaProduk || item.name || '',
+            img: item.gambar || item.img || '1.jpg',
+            img_src: item.img_src || '',
+            price: parseInt(item.harga || item.price || 0),
+            desc: item.deskripsi || item.desc || '',
+            kategori: item.kategori || ''
+        }));
+    }
+
     Alpine.data("products", () => ({
-        items: [
-            { id: 1, name: "Robusta Brazil",       img: "1.jpg", price: 20000, desc: "Biji kopi pilihan dari perkebunan Brazil dengan cita rasa nutty dan cokelat yang kuat. Sangrai medium, cocok untuk espresso dan pour-over." },
-            { id: 2, name: "Arabika Blend",         img: "2.jpg", price: 25000, desc: "Perpaduan sempurna biji Arabika dari berbagai dataran tinggi Indonesia. Aroma floral yang memikat dengan keasaman lembut dan aftertaste manis." },
-            { id: 3, name: "Primo Passo",           img: "3.jpg", price: 30000, desc: "Kopi spesialti single-origin dengan profil rasa fruity dan bright acidity. Sangrai light untuk menonjolkan karakter unik biji pilihan." },
-            { id: 4, name: "Aceh Gayo",             img: "4.jpg", price: 35000, desc: "Kopi premium dari dataran tinggi Gayo, Aceh. Rasa earthy yang kompleks, body tebal, dan aroma rempah yang khas. Sangrai medium-dark." },
-            { id: 5, name: "Sumatra Mandheling",    img: "5.jpg", price: 40000, desc: "Kopi ikonik dari Sumatera dengan body penuh dan rasa dark chocolate yang dalam. Proses wet-hulled menghasilkan profil rasa yang unik dan bold." },
-        ],
+        allItems: items,
+        currentPage: 1,
+        itemsPerPage: 6,
+        get filteredItems() {
+            return this.allItems;
+        },
+        get totalPages() {
+            return Math.ceil(this.filteredItems.length / this.itemsPerPage);
+        },
+        get items() {
+            let start = (this.currentPage - 1) * this.itemsPerPage;
+            let end = start + this.itemsPerPage;
+            return this.filteredItems.slice(start, end);
+        },
+        nextPage() {
+            if (this.currentPage < this.totalPages) this.currentPage++;
+        },
+        prevPage() {
+            if (this.currentPage > 1) this.currentPage--;
+        },
+        goToPage(page) {
+            this.currentPage = page;
+        }
+    }));
+
+    let menuKamiItems = [];
+    if (window.menuKamiProducts && window.menuKamiProducts.length > 0) {
+        menuKamiItems = window.menuKamiProducts.map(item => ({
+            id: parseInt(item.id),
+            name: item.namaProduk || item.name || '',
+            img: item.gambar || item.img || '1.jpg',
+            img_src: item.img_src || '',
+            price: parseInt(item.harga || item.price || 0),
+            desc: item.deskripsi || item.desc || '',
+            kategori: item.kategori || ''
+        }));
+    }
+
+    Alpine.data("menu", () => ({
+        allItems: menuKamiItems,
+        currentPage: 1,
+        itemsPerPage: 6,
+        init() {
+            this.$watch('$store.filter.category', () => {
+                this.currentPage = 1;
+            });
+        },
+        get filteredItems() {
+            let cat = Alpine.store("filter").category;
+            if (cat === 'Semua') return this.allItems;
+            return this.allItems.filter(item => item.kategori.toLowerCase() === cat.toLowerCase());
+        },
+        get totalPages() {
+            return Math.ceil(this.filteredItems.length / this.itemsPerPage);
+        },
+        get items() {
+            let start = (this.currentPage - 1) * this.itemsPerPage;
+            let end = start + this.itemsPerPage;
+            return this.filteredItems.slice(start, end);
+        },
+        nextPage() {
+            if (this.currentPage < this.totalPages) this.currentPage++;
+        },
+        prevPage() {
+            if (this.currentPage > 1) this.currentPage--;
+        },
+        goToPage(page) {
+            this.currentPage = page;
+        }
     }));
 
     // Store untuk modal detail produk

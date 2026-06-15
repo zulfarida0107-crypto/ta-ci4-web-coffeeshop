@@ -2,7 +2,7 @@
 // app/Helpers/api_helper.php
 
 // Pastikan mendefinisikan Base URL API Spring Boot
-define('API_BASE_URL', 'http://localhost:8083/api');
+define('API_BASE_URL', 'http://127.0.0.1:8083/api');
 
 // Fungsi untuk request GET (mengambil data)
 function api_get($endpoint, $token = null) {

@@ -185,7 +185,7 @@
 
     <!-- Products Section start -->
      <section class="products" id="products" x-data="products">
-      <h2><span>Produk Unggulan</span> Kami</h2>
+      <h2><span>Produk</span> Unggulan</h2>
       <p>Kami dengan bangga mempersembahkan produk kopi unggulan kami yang dibuat dengan cinta dan dedikasi. Setiap biji kopi dipilih dengan teliti untuk memastikan rasa yang lezat dan memuaskan.</p>
 
       <div class="row">
