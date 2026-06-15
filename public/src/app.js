@@ -167,68 +167,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 body: data,
             });
             
-            const token = await response.text();
-            const trimmedToken = token.trim();
+            const result = await response.json();
             
-            console.log("Midtrans token response:", trimmedToken);
-
-            if (!trimmedToken || trimmedToken.startsWith('ERROR:') || trimmedToken.startsWith('{')) {
-                console.error("Gagal mendapatkan token:", trimmedToken);
-                alert("Checkout gagal: " + (trimmedToken || "Tidak ada respons dari server."));
-            } else if (typeof window.snap === 'undefined') {
-                console.error("Midtrans Snap SDK belum dimuat.");
-                alert("Checkout gagal: Midtrans Snap SDK tidak tersedia. Cek koneksi internet.");
+            if (result.status === 'success') {
+                // Bersihkan keranjang
+                Alpine.store("cart").items = [];
+                Alpine.store("cart").total = 0;
+                Alpine.store("cart").quantity = 0;
+                
+                // Redirect ke halaman sukses
+                alert('Pesanan berhasil dibuat! Silakan menuju kasir untuk melakukan pembayaran.');
+                window.location.href = "/checkout/success";
             } else {
-                // Tutup shopping cart sebelum Snap buka
-                document.querySelector(".shopping-cart")?.classList.remove("active");
-
-                // Simpan posisi scroll sebelum Snap buka
-                const snapScrollY = window.scrollY;
-
-                // Fungsi untuk membebaskan scroll dan mengembalikan posisi secara instan
-                function forceUnlockScroll() {
-                    document.body.style.position = '';
-                    document.body.style.top = '';
-                    document.body.style.left = '';
-                    document.body.style.right = '';
-                    document.body.style.overflow = '';
-                    document.body.style.overflowY = '';
-                    // Midtrans Snap sering memodifikasi html element juga
-                    document.documentElement.style.overflow = '';
-                    document.documentElement.style.overflowY = '';
-                    // Kembalikan posisi scroll secara INSTAN (tanpa smooth animation)
-                    document.documentElement.style.scrollBehavior = 'auto';
-                    window.scrollTo(0, snapScrollY);
-                    requestAnimationFrame(() => {
-                        document.documentElement.style.scrollBehavior = '';
-                    });
-                }
-
-                // Snap.pay dengan callbacks lengkap
-                window.snap.pay(trimmedToken, {
-                    onSuccess: function (result) {
-                        forceUnlockScroll();
-                        console.log('Pembayaran berhasil:', result);
-                        alert('Pembayaran berhasil! Terima kasih telah berbelanja.');
-                        window.location.href = window.location.pathname;
-                    },
-                    onPending: function (result) {
-                        forceUnlockScroll();
-                        console.log('Pembayaran pending:', result);
-                        alert('Pembayaran sedang diproses. Silakan selesaikan pembayaran Anda.');
-                        window.location.href = window.location.pathname;
-                    },
-                    onError: function (result) {
-                        forceUnlockScroll();
-                        console.error('Pembayaran error:', result);
-                        alert('Terjadi kesalahan saat pembayaran. Silakan coba lagi.');
-                    },
-                    onClose: function () {
-                        // Tutup Snap → pulihkan scroll ke posisi semula secara instan
-                        forceUnlockScroll();
-                        console.log('Snap ditutup oleh user.');
-                    }
-                });
+                alert("Checkout gagal: " + (result.message || "Unknown error"));
             }
         } catch (err) {
             console.error("Error during checkout:", err);

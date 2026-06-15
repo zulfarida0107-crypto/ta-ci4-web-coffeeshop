@@ -25,9 +25,7 @@
     <!-- App -->
     <script src="<?= base_url('src/app.js') ?>" async></script>
 
-    <!-- Midtrans -->
-    <script type="text/javascript" src="https://app.stg.midtrans.com/snap/snap.js"></script>
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="Mid-client-YYeWPxzVuQXn7Idc"></script>
+    <!-- Midtrans Snap SDK Removed -->
   </head>
 
   <body>
