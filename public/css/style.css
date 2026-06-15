@@ -408,7 +408,12 @@ body {
 
 .menu .row .menu-card img {
   border-radius: 50%;
-  width: 80%;
+  width: 20rem;
+  height: 20rem;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  max-width: 100%;
+  margin: 0 auto;
 }
 
 .menu .row .menu-card .menu-card-title {

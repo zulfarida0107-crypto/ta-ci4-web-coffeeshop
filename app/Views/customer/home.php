@@ -21,8 +21,7 @@
   <!-- Alpine.js CDN -->
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-  <!-- Midtrans Snap SDK (Sandbox) -->
-  <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="Mid-client-YYeWPxzVuQXn7Idc"></script>
+  <!-- Midtrans Snap SDK Removed -->
 </head>
 
 <body>
@@ -108,7 +107,7 @@
     <div class="row">
       <?php foreach ($menuItems as $item): ?>
         <div class="menu-card">
-          <img src="<?= base_url('img/menu/' . $item['img']); ?>" alt="<?= $item['alt']; ?>" class="menu-card-img" />
+          <img src="<?= isset($item['img_src']) ? $item['img_src'] : base_url('img/menu/' . $item['img']); ?>" alt="<?= $item['alt']; ?>" class="menu-card-img" />
           <h3 class="menu-card-title">- <?= $item['title']; ?> -</h3>
           <p class="menu-card-price"><?= $item['price']; ?></p>
         </div>

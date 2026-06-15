@@ -13,8 +13,9 @@
 </head>
 <body>
     <div class="card">
-        <h1>✅ Pembayaran Berhasil!</h1>
-        <p>Terima kasih atas pesanan Anda. Kami sedang memproses kopi Anda.</p>
+        <h1>✅ Pesanan Berhasil Dibuat!</h1>
+        <p>Silakan menuju kasir untuk melakukan pembayaran secara langsung (Tunai / Debit).</p>
+        <p>Terima kasih atas pesanan Anda. Kami segera menyiapkan kopi Anda!</p>
         <a href="<?= base_url('/') ?>">Kembali ke Beranda</a>
     </div>
 </body>
