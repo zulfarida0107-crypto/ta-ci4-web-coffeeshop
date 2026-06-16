@@ -1,0 +1,6 @@
+{
+  "transaction_details": {
+    "order_id": "test-12345",
+    "gross_amount": 10000
+  }
+}

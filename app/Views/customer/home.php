@@ -53,12 +53,20 @@
         <input type="search" id="search-box" placeholder="search here..." style="width: 100%; height: 100%; border: none;" />
         <label for="search-box"><i data-feather="search" style="color: var(--bg);"></i></label>
       </div>
-      <div class="search-filters" style="display: flex; gap: 8px; width: 100%; padding: 8px 0; justify-content: flex-start; border-top: 1px solid #eee; margin-top: 5px;">
+      <div class="search-filters" x-data style="display: flex; gap: 8px; width: 100%; padding: 8px 0; justify-content: flex-start; border-top: 1px solid #eee; margin-top: 5px;">
         <span style="color: #666; font-size: 1.2rem; align-self: center; margin-right: 4px;">Filter:</span>
-        <button type="button" class="filter-shortcut-btn" :class="$store.filter.category === 'Kopi' ? 'active' : ''" @click="$store.filter.setCategory('Kopi'); document.getElementById('search-box').value = ''; window.pendingKeyword = ''; resetAllHighlight();">Kopi</button>
-        <button type="button" class="filter-shortcut-btn" :class="$store.filter.category === 'Non-Kopi' ? 'active' : ''" @click="$store.filter.setCategory('Non-Kopi'); document.getElementById('search-box').value = ''; window.pendingKeyword = ''; resetAllHighlight();">Non-Kopi</button>
-        <button type="button" class="filter-shortcut-btn" :class="$store.filter.category === 'Pastry' ? 'active' : ''" @click="$store.filter.setCategory('Pastry'); document.getElementById('search-box').value = ''; window.pendingKeyword = ''; resetAllHighlight();">Pastry</button>
-        <button type="button" class="filter-shortcut-btn" :class="$store.filter.category === 'Semua' ? 'active' : ''" @click="$store.filter.setCategory('Semua'); document.getElementById('search-box').value = ''; window.pendingKeyword = ''; resetAllHighlight();">Semua</button>
+        <button type="button" class="filter-shortcut-btn"
+          :class="$store.filter.category === 'Kopi' ? 'active' : ''"
+          @click="$store.filter.setCategory('Kopi'); document.getElementById('search-box').value = ''; window.pendingKeyword = ''; resetAllHighlight(); document.getElementById('menu').scrollIntoView({behavior:'smooth'});">Kopi</button>
+        <button type="button" class="filter-shortcut-btn"
+          :class="$store.filter.category === 'Non-Kopi' ? 'active' : ''"
+          @click="$store.filter.setCategory('Non-Kopi'); document.getElementById('search-box').value = ''; window.pendingKeyword = ''; resetAllHighlight(); document.getElementById('menu').scrollIntoView({behavior:'smooth'});">Non-Kopi</button>
+        <button type="button" class="filter-shortcut-btn"
+          :class="$store.filter.category === 'Pastry' ? 'active' : ''"
+          @click="$store.filter.setCategory('Pastry'); document.getElementById('search-box').value = ''; window.pendingKeyword = ''; resetAllHighlight(); document.getElementById('menu').scrollIntoView({behavior:'smooth'});">Pastry</button>
+        <button type="button" class="filter-shortcut-btn"
+          :class="$store.filter.category === 'Semua' ? 'active' : ''"
+          @click="$store.filter.setCategory('Semua'); document.getElementById('search-box').value = ''; window.pendingKeyword = ''; resetAllHighlight();">Semua</button>
       </div>
     </div>
     <div class="shopping-cart">

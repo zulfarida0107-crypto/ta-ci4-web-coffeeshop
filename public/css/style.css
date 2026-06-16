@@ -395,28 +395,32 @@ body {
 }
 
 .menu .row {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto;
+  gap: 2rem;
   margin-top: 5rem;
-  justify-content: center;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .menu .row .menu-card {
   text-align: center;
-  padding-bottom: 4rem;
   border: 2px solid transparent;
   border-radius: 0.8rem;
-  padding: 1rem 1rem 4rem;
+  padding: 1rem 1rem 2rem;
   transition: box-shadow 0.3s ease, border-color 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
 }
 
 .menu .row .menu-card img {
   border-radius: 50%;
-  width: 20rem;
-  height: 20rem;
+  width: 100%;
+  max-width: 18rem;
+  height: 18rem;
   aspect-ratio: 1 / 1;
   object-fit: cover;
-  max-width: 100%;
+  display: block;
   margin: 0 auto;
 }
 
@@ -859,6 +863,18 @@ footer .credit a {
     font-size: 1.2rem;
   }
 
+  /* Menu Kami — tetap 3 kolom, tidak berubah di layar kecil */
+  .menu .row {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+    margin-top: 3rem;
+  }
+
+  .menu .row .menu-card img {
+    max-width: 12rem;
+    height: 12rem;
+  }
+
   .contact .row {
     flex-wrap: wrap;
   }
@@ -880,6 +896,21 @@ footer .credit a {
 @media (max-width: 450px) {
   html {
     font-size: 55%;
+  }
+
+  /* Menu Kami — tetap 3 kolom di HP kecil */
+  .menu .row {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem;
+  }
+
+  .menu .row .menu-card img {
+    max-width: 8rem;
+    height: 8rem;
+  }
+
+  .menu .row .menu-card .menu-card-title {
+    font-size: 1rem;
   }
 }
 
