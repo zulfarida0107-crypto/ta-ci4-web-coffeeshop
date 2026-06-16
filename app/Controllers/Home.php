@@ -52,11 +52,9 @@ class Home extends BaseController
                     if (strpos($gambar, 'http://') === 0 || strpos($gambar, 'https://') === 0) {
                         $item['img_src'] = $gambar;
                     } else {
-                        // Jika hanya berupa nama file yang ada di folder public/img/menu/
                         if (file_exists(FCPATH . 'img/menu/' . $gambar)) {
                             $item['img_src'] = base_url('img/menu/' . $gambar);
                         } else {
-                            // Cek jika gambar berupa path absolut
                             $item['img_src'] = $gambar;
                         }
                     }
@@ -65,11 +63,23 @@ class Home extends BaseController
                     $item['img'] = '1.jpg';
                     $item['img_src'] = base_url('img/menu/1.jpg');
                 }
-                
-                $item['alt'] = $item['namaProduk'] ?? 'Kopi';
+
+                $item['alt']   = $item['namaProduk'] ?? 'Kopi';
                 $item['title'] = $item['namaProduk'] ?? 'Kopi';
-                $harga = $item['harga'] ?? 0;
+                $harga         = $item['harga'] ?? 0;
                 $item['price'] = 'IDR ' . number_format($harga / 1000, 0) . 'K';
+
+                // Normalisasi field kategori: trim + mapping ejaan tidak konsisten
+                $rawKat = trim($item['kategori'] ?? '');
+                $katMap = [
+                    'kopi'     => 'Kopi',
+                    'non-kopi' => 'Non-Kopi',
+                    'non kopi' => 'Non-Kopi',
+                    'nonkopi'  => 'Non-Kopi',
+                    'pastry'   => 'Pastry',
+                ];
+                $key = strtolower($rawKat);
+                $item['kategori'] = isset($katMap[$key]) ? $katMap[$key] : ($rawKat ?: 'Kopi');
             }
             unset($item);
 

@@ -55,15 +55,31 @@ document.addEventListener("alpine:init", () => {
 
     let menuKamiItems = [];
     if (window.menuKamiProducts && window.menuKamiProducts.length > 0) {
-        menuKamiItems = window.menuKamiProducts.map(item => ({
-            id: parseInt(item.id),
-            name: item.namaProduk || item.name || '',
-            img: item.gambar || item.img || '1.jpg',
-            img_src: item.img_src || '',
-            price: parseInt(item.harga || item.price || 0),
-            desc: item.deskripsi || item.desc || '',
-            kategori: item.kategori || ''
-        }));
+        menuKamiItems = window.menuKamiProducts.map(item => {
+            // Normalisasi kategori: trim whitespace, jaga kapitalisasi asli dari DB
+            let rawKategori = item.kategori || item.kategoriProduk || '';
+            let normKategori = rawKategori.trim();
+
+            // Normalisasi ejaan yang tidak konsisten dari input Flutter/DB
+            const kategoriMap = {
+                'kopi'    : 'Kopi',
+                'non-kopi': 'Non-Kopi',
+                'nonkopi' : 'Non-Kopi',
+                'non kopi': 'Non-Kopi',
+                'pastry'  : 'Pastry',
+            };
+            let normalizedKategori = kategoriMap[normKategori.toLowerCase()] || normKategori;
+
+            return {
+                id       : parseInt(item.id) || 0,
+                name     : item.namaProduk || item.name || '',
+                img      : item.gambar     || item.img  || '1.jpg',
+                img_src  : item.img_src    || '',
+                price    : parseInt(item.harga || item.price || 0),
+                desc     : item.deskripsi  || item.desc || '',
+                kategori : normalizedKategori,
+            };
+        });
     }
 
     Alpine.data("menu", () => ({
@@ -76,9 +92,13 @@ document.addEventListener("alpine:init", () => {
             });
         },
         get filteredItems() {
-            let cat = Alpine.store("filter").category;
-            if (cat === 'Semua') return this.allItems;
-            return this.allItems.filter(item => item.kategori.toLowerCase() === cat.toLowerCase());
+            let cat = Alpine.store('filter').category;
+            if (!cat || cat === 'Semua') return this.allItems;
+            return this.allItems.filter(item => {
+                let itemKat = (item.kategori || '').trim().toLowerCase();
+                let filterKat = cat.trim().toLowerCase();
+                return itemKat === filterKat;
+            });
         },
         get totalPages() {
             return Math.ceil(this.filteredItems.length / this.itemsPerPage);
