@@ -32,6 +32,27 @@ Classic Coffee Customer Web — A responsive CodeIgniter 4 web application for c
    ```
 6. Buka `http://localhost:8081` di browser Anda.
 
+## Pengujian & Uji Otomatis (Testing)
+
+Proyek ini dilengkapi dengan skrip pengujian otomatis berbasis **Selenium WebDriver** dan **pytest** untuk menjamin fungsionalitas seluruh alur fitur web (39 skenario uji).
+
+### Prasyarat Testing
+1. Pastikan Python 3.x telah terpasang pada komputer Anda.
+2. Pasang modul Python yang diperlukan melalui pip:
+   ```bash
+   pip install selenium pytest pytest-html
+   ```
+3. Pastikan driver browser (seperti ChromeDriver untuk Google Chrome) sesuai dengan versi browser Anda dan sudah terkonfigurasi.
+
+### Menjalankan Uji Otomatis
+1. Jalankan aplikasi web CodeIgniter 4 Anda pada port `8081`.
+2. Jalankan perintah berikut melalui terminal:
+   ```bash
+   cd c:/Dokumen/ta-server-coffeeshop/selenium
+   pytest test_ci4_web.py -v --html=report_ci4.html --self-contained-html
+   ```
+3. Hasil pengujian otomatis akan terekam secara detail dan laporan interaktif akan dibuat pada file `report_ci4.html`.
+
 ---
 
 ## Dokumentasi & Demo
@@ -45,3 +66,4 @@ Gunakan kolom di bawah ini untuk menambahkan tangkapan layar (screenshot), anima
 | **QR Code & Detail Pesanan** | *(Masukkan gambar di sini)* | Halaman pembayaran yang menampilkan data pesanan dan kode QR. |
 | **Modal Sukses Transaksi** | *(Masukkan gambar di sini)* | Floating modal sukses yang muncul setelah kasir mengonfirmasi pesanan. |
 | **Modal Gagal Transaksi** | *(Masukkan gambar di sini)* | Floating modal yang menginfokan kegagalan sistem lengkap dengan alasannya. |
+| **Laporan Uji Otomatis (Selenium)** | *(Masukkan gambar di sini)* | File laporan `report_ci4.html` yang merangkum hasil eksekusi uji otomatis seluruh modul web. |
