@@ -8,7 +8,7 @@ services:
     environment:
       CI_ENVIRONMENT: development
       database.default.hostname: db
-      database.default.database: db_kantin2
+      database.default.database: ta_db_coffeeshop
       database.default.username: root
       database.default.password: rootpassword
       database.default.DBDriver: MySQLi
@@ -22,7 +22,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: db_kantin2
+      MYSQL_DATABASE: ta_db_coffeeshop
     ports:
       - "3306:3306"
     volumes:
