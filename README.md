@@ -33,34 +33,62 @@ Pada sisi website customer (CodeIgniter 4), operasi data dibagi menjadi pengelol
 - **Database:** MySQL (dihubungkan via Spring Boot Server)
 - **Web Server:** Apache (Laragon / XAMPP)
 
-## Panduan Instalasi & Menjalankan Project
+## Arsitektur Docker
 
-1. Pastikan Laragon atau XAMPP Anda aktif dengan PHP 8.2+.
-2. Clone repository ini ke dalam direktori server Anda (misal `C:/laragon/www/ta-ci4-web-coffeeshop`).
-3. Salin file `.env.example` menjadi `.env` dan sesuaikan pengaturan database serta `app.baseURL`.
-4. Jalankan perintah composer untuk instalasi dependensi jika diperlukan:
-   ```bash
-   composer install
-   ```
-5. Jalankan server lokal melalui terminal:
-   ```bash
-   php spark serve --port 8081
-   ```
-6. Buka `http://localhost:8081` di browser Anda.
+Proyek ini telah dikontainerisasi menggunakan **Docker** untuk memastikan lingkungan pengembangan dan produksi yang konsisten. Sistem berjalan di atas tiga container utama yang saling terhubung dalam satu jaringan (network) Docker:
 
-## Deployment / Publikasi via GitHub
+1. **`ta-database-coffeeshop`**: Container MySQL (Port `3307:3306`) yang menyimpan seluruh data aplikasi.
+2. **`ta-server-coffeeshop`**: Container backend Spring Boot (Port `8083:8083`) yang terhubung langsung ke container database.
+3. **`ta-ci4-web-coffeeshop`**: Container frontend CodeIgniter 4 (Port `8080:80`) yang melayani antarmuka pelanggan dan berkomunikasi dengan server backend.
 
-Aplikasi web CodeIgniter 4 memerlukan server yang mendukung eksekusi PHP dan database MySQL (seperti VPS, Shared Hosting, cPanel, atau Cloud Hosting). Anda dapat memanfaatkan GitHub untuk mempermudah proses deployment:
+Dengan menggunakan `docker-compose`, seluruh environment dapat dibangun (build) dan dijalankan secara serentak tanpa perlu mengonfigurasi Apache, PHP, Java, atau MySQL secara manual di sistem operasi host.
 
-### Opsi 1: Integrasi Git Sync (cPanel / Shared Hosting)
-1. Hubungkan repository GitHub Anda dengan cPanel / hosting provider Anda melalui menu **Git Version Control**.
-2. Lakukan clone kode langsung ke folder `public_html` hosting Anda.
-3. Gunakan git pull untuk melakukan pembaruan kode secara instan saat ada perubahan baru di GitHub.
+## Panduan Instalasi & Menjalankan Project (menggunakan Docker)
 
-### Opsi 2: Otomatisasi CI/CD dengan GitHub Actions
-Anda dapat membuat workflow deployment otomatis (misalnya mengunggah kode ke server hosting via FTP atau SSH setiap kali Anda melakukan push ke branch `main`):
-1. Buat berkas konfigurasi `.github/workflows/deploy.yml` di dalam repository.
-2. Konfigurasikan secret environment (seperti FTP_SERVER, FTP_USERNAME, FTP_PASSWORD) di menu Settings > Secrets and Variables > Actions pada repository GitHub Anda.
+Berikut adalah panduan lengkap menjalankan & mengelola sistem terintegrasi (Web, Server, dan Database) menggunakan **Command Prompt (CMD)** via Docker:
+
+### 1. 🚀 Menyalakan Seluruh Sistem
+
+Buka **Command Prompt (CMD)**, lalu ketik perintah ini:
+
+```cmd
+cd C:\Dokumen
+docker compose up -d --build
+```
+
+> **Penjelasan Perintah:**
+> - `cd C:\Dokumen` $\rightarrow$ Pindah ke folder lokasi Master Docker.
+> - `up -d` $\rightarrow$ Menyalakan seluruh container di background (agar CMD tidak terkunci).
+> - `--build` $\rightarrow$ Memastikan Docker mem-build versi kode terbaru dari Web & Server Anda.
+
+### 2. 📊 Cek Status Container
+
+Untuk melihat apakah semua container sudah aktif dan berjalan normal:
+
+```cmd
+docker compose ps
+```
+*(Anda akan melihat daftar container `ta-ci4-web-coffeeshop`, `ta-server-coffeeshop`, dan `ta-database-coffeeshop` berserta port-nya)*.
+
+### 3. 📜 Melihat Log Sistem (Real-time)
+
+Jika ingin melihat log aktivitas server (misal saat ada transaksi pesanan masuk):
+
+```cmd
+docker compose logs -f
+```
+*(Tekan `Ctrl + C` untuk keluar dari tampilan log)*.
+
+### 4. 🛑 Mematikan Seluruh Sistem
+
+Jika sudah selesai digunakan dan ingin mematikan container:
+
+```cmd
+cd C:\Dokumen
+docker compose down
+```
+
+
 
 ## Pengujian & Uji Otomatis (Testing)
 
@@ -101,3 +129,6 @@ Gunakan kolom di bawah ini untuk menambahkan tangkapan layar (screenshot), anima
 | **Modal Sukses Transaksi** | ![Modal Sukses](documentation/modal_sukses.png) | Floating modal sukses yang muncul setelah kasir mengonfirmasi pesanan. |
 | **Modal Gagal Transaksi** | ![Modal Gagal](documentation/modal_gagal.png) | Floating modal merah "Pesanan Gagal Dikirim!" yang muncul ketika server API tidak dapat dijangkau. |
 | **Laporan Uji Otomatis (Selenium)** | ![Laporan Testing](documentation/pytest_result.png) | Bukti eksekusi uji otomatis menggunakan Selenium yang menunjukkan 39 test case sukses (PASSED). |
+| **Docker Build & Up** | ![Docker Build](documentation/docker_build.png) | Proses kompilasi image dan inisialisasi container secara serentak menggunakan `docker compose up -d --build`. |
+| **Status Container (CLI)** | ![Docker PS](documentation/docker_ps.png) | Verifikasi container yang berjalan (Web, Server, DB) beserta port mapping-nya melalui `docker compose ps`. |
+| **Docker Desktop UI** | ![Docker Desktop](documentation/docker_desktop.png) | Tampilan manajemen visual container, resource usage, dan logs melalui Docker Desktop. |
