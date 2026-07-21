@@ -243,6 +243,122 @@
         }
         .btn-back:hover { border-color: var(--accent); color: var(--accent); }
 
+        /* ── Status Modal Overlay ── */
+        .status-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(5px);
+            z-index: 99999;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+        .status-modal-overlay.show {
+            display: flex;
+        }
+        .status-modal-card {
+            background: var(--card-bg);
+            border: 2.5px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2.5rem 2rem;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            animation: modalPop 0.3s ease-out;
+            position: relative;
+        }
+        @keyframes modalPop {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .status-icon {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.2rem;
+        }
+        .status-icon.success-icon {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 2.5px solid #2e7d32;
+        }
+        .status-icon.error-icon {
+            background: #ffebee;
+            color: #c62828;
+            border: 2.5px solid #c62828;
+        }
+
+        .status-modal-card h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .status-modal-card h2.success-title {
+            color: #2e7d32;
+        }
+        .status-modal-card h2.error-title {
+            color: #c62828;
+        }
+
+        .status-modal-card .subtitle {
+            font-size: 0.9rem;
+            color: var(--muted);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-order-info {
+            background: var(--light-bg);
+            border: 2.5px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        .modal-order-info .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.4rem 0;
+            font-size: 0.9rem;
+            border-bottom: 1.5px dashed var(--accent);
+        }
+        .modal-order-info .row:last-child { border-bottom: none; }
+        .modal-order-info .label { color: var(--muted); }
+        .modal-order-info .value { font-weight: 700; color: var(--text); }
+        .modal-order-info .total-value { color: var(--primary) !important; font-size: 1.05rem !important; }
+
+        .modal-info-box {
+            background: #fffbf0;
+            border: 2px solid #ffe0a0;
+            border-radius: 8px;
+            padding: 0.8rem 1rem;
+            font-size: 0.85rem;
+            color: #7a5c20;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .reason-box {
+            background: #fff5f5;
+            border: 2px solid #ffcdd2;
+            border-radius: 8px;
+            padding: 0.8rem 1rem;
+            font-size: 0.85rem;
+            color: #c62828;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            text-align: left;
+            word-break: break-word;
+        }
+
         /* ── Loading overlay ── */
         .overlay {
             display: none;
@@ -304,7 +420,7 @@
 
         <!-- Order Detail Card -->
         <div class="card">
-            <div class="card-title">📋 Detail Pesanan</div>
+            <div class="card-title">Detail Pesanan</div>
 
             <!-- Info pelanggan -->
             <div class="info-row">
@@ -366,6 +482,13 @@
     <div class="overlay" id="loadingOverlay">
         <div class="spinner"></div>
         <p>Memproses pesanan Anda...</p>
+    </div>
+
+    <!-- Floating Notification Modal -->
+    <div id="statusModal" class="status-modal-overlay">
+        <div class="status-modal-card" id="statusModalCard">
+            <!-- Content dynamically set by JS -->
+        </div>
     </div>
 
     <!-- Data untuk QR (dikirim dari PHP ke JS) -->
@@ -449,19 +572,72 @@
                 overlay.classList.remove('show');
 
                 if (result.status === 'success') {
-                    window.location.href = '<?= base_url('checkout/success') ?>';
+                    const formattedTotal = 'Rp ' + Number(result.total).toLocaleString('id-ID');
+                    document.getElementById('statusModalCard').innerHTML = `
+                        <div class="status-icon success-icon">
+                            <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                        </div>
+                        <h2 class="success-title">Pesanan Berhasil Dibuat!</h2>
+                        <p class="subtitle">
+                            Pesanan Anda telah tercatat di sistem.<br>
+                            Silakan menuju kasir untuk menyelesaikan pembayaran.
+                        </p>
+                        <div class="modal-order-info">
+                            <div class="row">
+                                <span class="label">ID Pesanan</span>
+                                <span class="value">#${result.order_id}</span>
+                            </div>
+                            <div class="row">
+                                <span class="label">Nama Pelanggan</span>
+                                <span class="value">${result.nama}</span>
+                            </div>
+                            <div class="row">
+                                <span class="label">Total Pembayaran</span>
+                                <span class="value total-value">${formattedTotal}</span>
+                            </div>
+                            <div class="row">
+                                <span class="label">Status</span>
+                                <span class="value" style="color:#c0782a;">Menunggu Pembayaran</span>
+                            </div>
+                        </div>
+                        <div class="modal-info-box">
+                            <strong>Terima kasih atas pesanan Anda!</strong><br>
+                            Tim kami segera menyiapkan kopi Anda dengan penuh cinta.<br>
+                            Pembayaran diterima secara <strong>Tunai atau Debit</strong> di kasir.
+                        </div>
+                        <a href="<?= base_url('/') ?>" class="btn-confirm" style="text-decoration:none; display:block;">Kembali ke Beranda</a>
+                    `;
+                    document.getElementById('statusModal').classList.add('show');
                 } else {
-                    alert('Gagal mengirim pesanan: ' + (result.message || 'Silakan coba lagi.'));
+                    showErrorModal(result.message || 'Gagal menyimpan pesanan ke server backend.');
                     btn.disabled    = false;
                     btn.textContent = 'Konfirmasi & Kirim Pesanan';
                 }
             } catch (err) {
                 overlay.classList.remove('show');
-                alert('Terjadi kesalahan koneksi. Silakan coba lagi.');
+                showErrorModal(err.message || 'Terjadi kesalahan koneksi ke server.');
                 btn.disabled    = false;
                 btn.textContent = 'Konfirmasi & Kirim Pesanan';
             }
-        });    </script>
+        });
+
+        function showErrorModal(reason) {
+            document.getElementById('statusModalCard').innerHTML = `
+                <div class="status-icon error-icon">
+                    <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                </div>
+                <h2 class="error-title">Pesanan Gagal Dikirim!</h2>
+                <p class="subtitle">
+                    Terjadi kesalahan saat memproses pesanan Anda ke server backend.
+                </p>
+                <div class="reason-box">
+                    <strong>Penyebab kegagalan:</strong><br>
+                    ${reason}
+                </div>
+                <button type="button" class="btn-confirm" onclick="document.getElementById('statusModal').classList.remove('show')">Tutup</button>
+            `;
+            document.getElementById('statusModal').classList.add('show');
+        }    </script>
 
 </body>
 </html>

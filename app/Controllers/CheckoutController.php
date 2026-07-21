@@ -123,19 +123,29 @@ class CheckoutController extends Controller
 
                 return $this->response
                     ->setContentType('application/json')
-                    ->setBody(json_encode(['status' => 'success']));
+                    ->setBody(json_encode([
+                        'status'   => 'success',
+                        'order_id' => $pesananId,
+                        'nama'     => $orderData['nama_pelanggan'],
+                        'total'    => $orderData['total_harga']
+                    ]));
             } else {
                 return $this->response
                     ->setStatusCode(500)
+                    ->setContentType('application/json')
                     ->setBody(json_encode([
                         'status'  => 'error',
-                        'message' => $apiResult['message'] ?? 'Gagal menyimpan pesanan ke server.',
+                        'message' => $apiResult['message'] ?? 'Gagal menyimpan pesanan ke server backend.',
                     ]));
             }
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             return $this->response
                 ->setStatusCode(500)
-                ->setBody(json_encode(['status' => 'error', 'message' => $e->getMessage()]));
+                ->setContentType('application/json')
+                ->setBody(json_encode([
+                    'status'  => 'error',
+                    'message' => $e->getMessage()
+                ]));
         }
     }
 
