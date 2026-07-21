@@ -156,8 +156,17 @@
           </div>
           <div class="product-content">
             <h3 x-text="item.name"></h3>
-            <div class="product-price"><span x-text="rupiah(item.price)"></span></div>
-            <a href="#" @click.prevent="$store.modal.open(item)" class="detail-button">Detail Informasi Produk</a>
+            <div class="product-price" style="margin-bottom: 0.5rem;"><span x-text="rupiah(item.price)"></span></div>
+            <div style="display: flex; gap: 8px; margin-top: 1rem; width: 100%;">
+              <button @click.prevent="$store.cart.add(item)" class="btn" style="flex: 1; padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 600; cursor: pointer; border-radius: 8px; border: none; background-color: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="<?= base_url('img/feather-sprite.svg#shopping-cart') ?>" /></svg>
+                Beli
+              </button>
+              <button @click.prevent="$store.modal.open(item)" class="btn" style="flex: 1; padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 600; cursor: pointer; border-radius: 8px; border: 1px solid var(--primary); background-color: transparent; color: var(--primary); display: flex; align-items: center; justify-content: center; gap: 6px;">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="<?= base_url('img/feather-sprite.svg#eye') ?>" /></svg>
+                Detail
+              </button>
+            </div>
           </div>
         </div>
       </template>
@@ -236,6 +245,12 @@
             <p x-text="$store.modal.product.desc"
               style="font-size:1.1rem;color:#555;margin:0.5rem 0 1rem;line-height:1.6;"></p>
             <div class="product-price" x-text="rupiah($store.modal.product.price)"></div>
+            <template x-if="$store.modal.product.isUnggulan">
+              <button @click.prevent="$store.cart.add($store.modal.product); $store.modal.close()" class="btn" style="margin-top: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 0.8rem; font-size: 1rem; font-weight: 600; cursor: pointer; border-radius: 8px; border: none; background-color: var(--primary); color: #fff;">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="<?= base_url('img/feather-sprite.svg#shopping-cart') ?>" /></svg>
+                Tambah ke Keranjang
+              </button>
+            </template>
           </div>
         </div>
       </template>

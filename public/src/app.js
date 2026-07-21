@@ -23,7 +23,8 @@ document.addEventListener("alpine:init", () => {
             img_src: item.img_src || '',
             price: parseInt(item.harga || item.price || 0),
             desc: item.deskripsi || item.desc || '',
-            kategori: item.kategori || ''
+            kategori: item.kategori || '',
+            isUnggulan: true
         }));
     }
 
@@ -78,6 +79,7 @@ document.addEventListener("alpine:init", () => {
                 price    : parseInt(item.harga || item.price || 0),
                 desc     : item.deskripsi  || item.desc || '',
                 kategori : normalizedKategori,
+                isUnggulan: false
             };
         });
     }
