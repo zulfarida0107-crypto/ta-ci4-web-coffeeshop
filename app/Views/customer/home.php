@@ -40,7 +40,7 @@
 
     <div class="navbar-extra">
       <a href="#" id="search-button"><i data-feather="search"></i></a>
-      <a href="#" id="shopping-cart-button" style="display: none !important;">
+      <a href="#" id="shopping-cart-button">
         <i data-feather="shopping-cart"></i>
         <span class="quantity-badge" x-show="$store.cart.quantity" x-text="$store.cart.quantity"></span>
       </a>
@@ -127,10 +127,14 @@
     <p>Pilihan kopi terbaik untuk memuaskan selera Anda</p>
     <div class="row">
       <template x-for="(item, index) in items" :key="index">
-        <div class="menu-card">
+        <div class="menu-card" style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding-bottom: 1.5rem;">
           <img :src="getMenuImgSrc(item.img, item.img_src)" :alt="item.name" class="menu-card-img" @click.prevent="$store.modal.open(item)" style="cursor: pointer;" />
           <h3 class="menu-card-title">- <span x-text="item.name"></span> -</h3>
-          <p class="menu-card-price" x-text="'IDR ' + Math.floor(item.price / 1000) + 'K'"></p>
+          <p class="menu-card-price" x-text="'IDR ' + Math.floor(item.price / 1000) + 'K'" style="margin-bottom: 0.5rem;"></p>
+          <button @click.prevent="$store.cart.add(item)" class="btn" style="padding: 0.5rem 1rem; font-size: 0.9rem; font-weight: 600; cursor: pointer; border-radius: 8px; border: none; background-color: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; gap: 6px; width: 80%;">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="<?= base_url('img/feather-sprite.svg#shopping-cart') ?>" /></svg>
+            Beli
+          </button>
         </div>
       </template>
     </div>
@@ -214,13 +218,16 @@
   <div id="contact-toast"></div>
 
   <footer>
-    <div class="social">
-      <a href="https://www.instagram.com/tomorocoffee.id?igsh=MXBxaWxla3lqdm9haQ==" target="_blank"
-        rel="noopener noreferrer"><i data-feather="instagram"></i></a>
-      <a href="https://x.com/TomoroCoffee_ID" target="_blank" rel="noopener noreferrer"><i
-          data-feather="twitter"></i></a>
-      <a href="https://www.facebook.com/tomorocoffee.id/" target="_blank" rel="noopener noreferrer"><i
-          data-feather="facebook"></i></a>
+    <div class="social" style="display: flex; justify-content: center; align-items: center; gap: 1.5rem; margin: 1.5rem 0;">
+      <a href="https://www.instagram.com/tomorocoffee.id?igsh=MXBxaWxla3lqdm9haQ==" target="_blank" rel="noopener noreferrer">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" alt="Instagram" style="width: 32px; height: 32px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='scale(1)'" />
+      </a>
+      <a href="https://www.facebook.com/tomorocoffee.id/" target="_blank" rel="noopener noreferrer">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" alt="Facebook" style="width: 32px; height: 32px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='scale(1)'" />
+      </a>
+      <a href="https://x.com/TomoroCoffee_ID" target="_blank" rel="noopener noreferrer">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/c/ce/X_logo_2023.svg" alt="X" style="width: 32px; height: 32px; background: #000; border-radius: 6px; padding: 5px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='scale(1)'" />
+      </a>
     </div>
     <div class="links">
       <?php foreach ($navLinks as $url => $label): ?>
@@ -239,18 +246,16 @@
       <button type="button" class="close-icon" @click="$store.modal.close()"><i data-feather="x"></i></button>
       <template x-if="$store.modal.product">
         <div class="modal-content">
-          <img :src="$store.modal.product.img_src || getProductImgSrc($store.modal.product.img)" :alt="$store.modal.product.name" />
+          <img :src="$store.modal.product.isUnggulan ? getProductImgSrc($store.modal.product.img) : getMenuImgSrc($store.modal.product.img, $store.modal.product.img_src)" :alt="$store.modal.product.name" />
           <div class="product-content">
             <h3 x-text="$store.modal.product.name"></h3>
             <p x-text="$store.modal.product.desc"
               style="font-size:1.1rem;color:#555;margin:0.5rem 0 1rem;line-height:1.6;"></p>
             <div class="product-price" x-text="rupiah($store.modal.product.price)"></div>
-            <template x-if="$store.modal.product.isUnggulan">
-              <button @click.prevent="$store.cart.add($store.modal.product); $store.modal.close()" class="btn" style="margin-top: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 0.8rem; font-size: 1rem; font-weight: 600; cursor: pointer; border-radius: 8px; border: none; background-color: var(--primary); color: #fff;">
-                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="<?= base_url('img/feather-sprite.svg#shopping-cart') ?>" /></svg>
-                Tambah ke Keranjang
-              </button>
-            </template>
+            <button @click.prevent="$store.cart.add($store.modal.product); $store.modal.close()" class="btn" style="margin-top: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 0.8rem; font-size: 1rem; font-weight: 600; cursor: pointer; border-radius: 8px; border: none; background-color: var(--primary); color: #fff;">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="<?= base_url('img/feather-sprite.svg#shopping-cart') ?>" /></svg>
+              Tambah ke Keranjang
+            </button>
           </div>
         </div>
       </template>
