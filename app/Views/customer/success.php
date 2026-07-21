@@ -95,7 +95,6 @@
 </head>
 <body>
     <div class="card">
-        <span class="icon">✅</span>
         <h1>Pesanan Berhasil Dibuat!</h1>
         <p class="subtitle">
             Pesanan Anda telah tercatat di sistem.<br>
@@ -128,12 +127,12 @@
         <?php endif; ?>
 
         <div class="info-box">
-            ☕ <strong>Terima kasih atas pesanan Anda!</strong><br>
+            <strong>Terima kasih atas pesanan Anda!</strong><br>
             Tim kami segera menyiapkan kopi Anda dengan penuh cinta.<br>
             Pembayaran diterima secara <strong>Tunai atau Debit</strong> di kasir.
         </div>
 
-        <a href="<?= base_url('/') ?>" class="btn">← Kembali ke Beranda</a>
+        <a href="<?= base_url('/') ?>" class="btn">Kembali ke Beranda</a>
     </div>
 </body>
 </html>

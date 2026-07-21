@@ -13,7 +13,7 @@
 </head>
 <body>
     <div class="card">
-        <h1>❌ Pembayaran Gagal</h1>
+        <h1>Pembayaran Gagal</h1>
         <p>Terjadi kesalahan pada pembayaran Anda. Silakan coba lagi.</p>
         <a href="<?= base_url('/') ?>">Kembali ke Beranda</a>
     </div>

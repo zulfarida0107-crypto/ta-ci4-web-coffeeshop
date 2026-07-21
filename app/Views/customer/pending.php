@@ -13,7 +13,7 @@
 </head>
 <body>
     <div class="card">
-        <h1>⏳ Pembayaran Pending</h1>
+        <h1>Pembayaran Pending</h1>
         <p>Silakan selesaikan pembayaran Anda melalui instruksi Midtrans.</p>
         <a href="<?= base_url('/') ?>">Kembali ke Beranda</a>
     </div>
