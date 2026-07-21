@@ -93,12 +93,15 @@ class CheckoutController extends Controller
         if (empty($orderData)) {
             return redirect()->to('/');
         }
-
         try {
+            // Get first product ID to satisfy foreign key constraint
+            $firstItem = reset($orderData['items']);
+            $idProduk  = (isset($firstItem['id']) && (int)$firstItem['id'] > 0) ? (int)$firstItem['id'] : 1;
+
             // Kirim data pesanan ke Spring Boot API
             $postData = [
                 'namaPelanggan' => $orderData['nama_pelanggan'],
-                'idProduk'      => 0,
+                'idProduk'      => $idProduk,
                 'jumlah'        => array_sum(array_column($orderData['items'], 'quantity')),
                 'totalHarga'    => (float) $orderData['total_harga'],
                 'statusPesanan' => 'Baru',
