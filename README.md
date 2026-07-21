@@ -96,6 +96,7 @@ Gunakan kolom di bawah ini untuk menambahkan tangkapan layar (screenshot), anima
 | **Menu Kami** | ![Menu Kami](documentation/menu_kami.png) | Daftar produk kopi, non-kopi, dan pastry dengan filter dinamis. |
 | **Detail Produk & Keranjang** | ![Detail & Keranjang](documentation/keranjang_belanja.png) | Pop-up detail menu dan pengelolaan item belanja pelanggan. |
 | **Halaman Kontak** | ![Kontak](documentation/halaman_kontak.png) | Formulir saran/masukan pelanggan terintegrasi dengan Google Maps. |
+| **Cuplikan Kode Form Kontak** | ![Cuplikan Kode](documentation/contact_controller_snippet.png) | Potongan kode program PHP Controller CI4 untuk memproses pengiriman saran pelanggan ke database backend. |
 | **QR Code & Detail Pesanan** | ![Halaman Pembayaran](documentation/halaman_pembayaran.png) | Halaman pembayaran yang menampilkan data pesanan dan kode QR. |
 | **Modal Sukses Transaksi** | ![Modal Sukses](documentation/modal_sukses.png) | Floating modal sukses yang muncul setelah kasir mengonfirmasi pesanan. |
 | **Modal Gagal Transaksi** | *(Masukkan gambar di sini)* | Floating modal yang menginfokan kegagalan sistem lengkap dengan alasannya. |
