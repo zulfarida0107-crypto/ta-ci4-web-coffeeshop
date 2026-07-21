@@ -12,12 +12,13 @@
 
     <style>
         :root {
-            --primary:   #b6895b; /* Gold/brown accent from CI4 theme */
-            --bg:        #010101; /* Pure dark background */
-            --card-bg:   #111111; /* Dark card background */
-            --text:      #ffffff; /* White text */
-            --muted:     #a0a0a0; /* Grey muted text */
-            --border:    #2c1b10; /* Dark brown border */
+            --primary:   #6b3a2a; /* Dark coffee brown */
+            --accent:    #b6895b; /* Gold/brown accent */
+            --bg:        #ebdcd0; /* Fallback light background */
+            --card-bg:   rgba(255, 255, 255, 0.96); /* Readable card background over pattern */
+            --text:      #3d1f0f; /* Dark brown text matching the pattern drawing */
+            --muted:     #6b5a50; /* Muted brown */
+            --border:    #ebdcd0; /* Light border */
             --radius:    14px;
         }
 
@@ -25,7 +26,8 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: var(--bg);
+            background: url('<?= base_url('img/bg-pattern.jpg') ?>') repeat;
+            background-size: 450px;
             color: var(--text);
             min-height: 100vh;
             display: flex;
@@ -39,18 +41,23 @@
         .page-header {
             text-align: center;
             margin-bottom: 2.2rem;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            border: 3px solid var(--primary);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
         .page-header .logo {
             font-size: 2.2rem;
             font-weight: 700;
-            color: #fff;
+            color: var(--primary);
             letter-spacing: -0.5px;
         }
-        .page-header .logo span { color: var(--primary); }
+        .page-header .logo span { color: var(--accent); }
         .page-header h1 {
             font-size: 1.6rem;
             font-weight: 600;
-            color: #fff;
+            color: var(--text);
             margin-top: 0.6rem;
         }
         .page-header p {
@@ -75,9 +82,9 @@
         .card {
             background: var(--card-bg);
             border-radius: var(--radius);
-            border: 1px solid var(--border);
+            border: 3px solid var(--primary); /* Thick border for grid cards */
             padding: 1.8rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            box-shadow: 0 8px 30px rgba(107, 58, 42, 0.15);
         }
         .card-title {
             font-size: 0.9rem;
@@ -87,7 +94,7 @@
             color: var(--primary);
             margin-bottom: 1.2rem;
             padding-bottom: 0.6rem;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 2px solid var(--primary);
         }
 
         /* ── QR Section ── */
@@ -106,7 +113,7 @@
         #qrcode img {
             border: 6px solid #fff;
             border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(182, 137, 91, 0.35);
+            box-shadow: 0 4px 20px rgba(107, 58, 42, 0.25);
             max-width: 100%;
             height: auto;
         }
@@ -117,8 +124,8 @@
             line-height: 1.6;
         }
         .qr-scan-label {
-            background: #1a1a1a;
-            border: 1px solid var(--border);
+            background: #fdfaf7;
+            border: 1px solid var(--accent);
             border-radius: 8px;
             padding: 0.5rem 1rem;
             font-size: 0.82rem;
@@ -133,7 +140,7 @@
             justify-content: space-between;
             align-items: flex-start;
             padding: 0.6rem 0;
-            border-bottom: 1px dashed var(--border);
+            border-bottom: 1px dashed var(--accent);
             font-size: 0.9rem;
             gap: 0.5rem;
         }
@@ -141,7 +148,7 @@
         .info-label { color: var(--muted); flex-shrink: 0; }
         .info-value {
             font-weight: 500;
-            color: #fff;
+            color: var(--text);
             text-align: right;
         }
 
@@ -151,11 +158,11 @@
             justify-content: space-between;
             align-items: center;
             padding: 0.55rem 0;
-            border-bottom: 1px dashed var(--border);
+            border-bottom: 1px dashed var(--accent);
             font-size: 0.88rem;
         }
         .item-row:last-child { border-bottom: none; }
-        .item-name { color: #fff; font-weight: 500; }
+        .item-name { color: var(--text); font-weight: 500; }
         .item-qty  { color: var(--muted); font-size: 0.8rem; margin-top: 2px; }
         .item-price { font-weight: 600; color: var(--primary); white-space: nowrap; }
 
@@ -172,13 +179,13 @@
 
         /* ── Status Info ── */
         .status-info {
-            background: #16120e;
-            border: 1px solid #5c3c24;
+            background: #fdfaf7;
+            border: 1px solid var(--accent);
             border-radius: 10px;
             padding: 1rem 1.2rem;
             margin-top: 1.5rem;
             font-size: 0.85rem;
-            color: #ddd;
+            color: var(--text);
             line-height: 1.7;
         }
         .status-info strong { color: var(--primary); }
@@ -205,16 +212,16 @@
             letter-spacing: 0.3px;
             transition: background 0.2s, transform 0.1s;
         }
-        .btn-confirm:hover  { background: #966f44; }
+        .btn-confirm:hover  { background: #522b1f; }
         .btn-confirm:active { transform: scale(0.98); }
-        .btn-confirm:disabled { background: #555; color: #888; cursor: not-allowed; }
+        .btn-confirm:disabled { background: #dcd4cf; color: #a59c96; cursor: not-allowed; }
 
         .btn-back {
             width: 100%;
             padding: 0.8rem;
             background: transparent;
             color: var(--muted);
-            border: 1px solid var(--border);
+            border: 1px solid var(--accent);
             border-radius: 10px;
             font-size: 0.88rem;
             font-family: 'Poppins', sans-serif;
@@ -222,16 +229,16 @@
             text-decoration: none;
             display: block;
             text-align: center;
-            transition: border-color 0.2s, color 0.2s;
+            transition: border-color 0.2s, color 0.2s, background-color 0.2s;
         }
-        .btn-back:hover { border-color: var(--primary); color: var(--primary); }
+        .btn-back:hover { border-color: var(--primary); color: var(--primary); background: rgba(107, 58, 42, 0.05); }
 
         /* ── Loading overlay ── */
         .overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.75);
+            background: rgba(0,0,0,0.6);
             z-index: 9999;
             align-items: center;
             justify-content: center;
