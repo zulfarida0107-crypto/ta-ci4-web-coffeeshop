@@ -10,6 +10,22 @@ Classic Coffee Customer Web — A responsive CodeIgniter 4 web application for c
 - **Floating Status Modal:** Notifikasi instan (sukses/gagal/pending) yang muncul melayang di atas halaman QR Code tanpa mengalihkan halaman.
 - **Formulir Hubungi Kami:** Integrasi kontak langsung pelanggan ke database.
 
+## Keterangan Operasi CRUD
+
+Pada sisi website customer (CodeIgniter 4), operasi data dibagi menjadi pengelolaan data lokal sisi client (Keranjang Belanja) dan pengiriman data ke server backend:
+
+1. **Modul Keranjang Belanja (CRUD Lokal Sisi Client):**
+   - **Create:** Menambahkan produk kopi atau makanan ringan ke keranjang belanja saat mengeklik tombol "Beli" / "Add to Cart".
+   - **Read:** Membaca dan menampilkan daftar item belanja yang terpilih beserta ringkasan harga pada widget keranjang.
+   - **Update:** Memperbarui kuantitas produk (menambah atau mengurangi jumlah item) secara dinamis di keranjang.
+   - **Delete:** Menghapus item tertentu atau mengosongkan seluruh keranjang belanja.
+2. **Modul Checkout & Pesanan (Create):**
+   - **Create:** Mengirimkan data pemesanan (nama, nomor telepon, email, daftar item, dan total harga) ke backend Spring Boot untuk disimpan sebagai transaksi baru.
+3. **Modul Hubungi Kami (Create):**
+   - **Create:** Mengirimkan formulir kontak dari pelanggan (nama, email, subjek, dan isi pesan) ke server database melalui backend API.
+4. **Modul Katalog Menu (Read-Only):**
+   - **Read:** Membaca data katalog menu produk yang aktif dari server backend untuk ditampilkan secara dinamis kepada pelanggan.
+
 ## Teknologi
 
 - **Framework:** CodeIgniter 4 (PHP 8.2)
