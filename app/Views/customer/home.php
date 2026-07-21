@@ -226,7 +226,7 @@
         <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" alt="Facebook" style="width: 32px; height: 32px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='scale(1)'" />
       </a>
       <a href="https://x.com/TomoroCoffee_ID" target="_blank" rel="noopener noreferrer">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/c/ce/X_logo_2023.svg" alt="X" style="width: 32px; height: 32px; background: #000; border-radius: 6px; padding: 5px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='scale(1)'" />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/X_logo_2023_%28black%29.svg" alt="X" style="width: 32px; height: 32px; background: #fff; border-radius: 6px; padding: 4px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='scale(1)'" />
       </a>
     </div>
     <div class="links">
