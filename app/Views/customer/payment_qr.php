@@ -10,19 +10,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
-    <!-- QR Code Library (qrcode.js via CDN) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
     <style>
         :root {
-            --primary:   #6b3a2a;
-            --accent:    #b6895b;
-            --light-bg:  #faf6f0;
-            --card-bg:   #ffffff;
-            --text:      #2d1a0e;
-            --muted:     #7a6655;
-            --success:   #2e7d32;
-            --border:    #e8ddd5;
+            --primary:   #b6895b; /* Gold/brown accent from CI4 theme */
+            --bg:        #010101; /* Pure dark background */
+            --card-bg:   #111111; /* Dark card background */
+            --text:      #ffffff; /* White text */
+            --muted:     #a0a0a0; /* Grey muted text */
+            --border:    #2c1b10; /* Dark brown border */
             --radius:    14px;
         }
 
@@ -30,7 +25,7 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: var(--light-bg);
+            background: var(--bg);
             color: var(--text);
             min-height: 100vh;
             display: flex;
@@ -43,25 +38,25 @@
         /* ── Header ── */
         .page-header {
             text-align: center;
-            margin-bottom: 1.8rem;
+            margin-bottom: 2.2rem;
         }
         .page-header .logo {
-            font-size: 1.6rem;
+            font-size: 2.2rem;
             font-weight: 700;
-            color: var(--primary);
+            color: #fff;
             letter-spacing: -0.5px;
         }
-        .page-header .logo span { color: var(--accent); }
+        .page-header .logo span { color: var(--primary); }
         .page-header h1 {
-            font-size: 1.25rem;
+            font-size: 1.6rem;
             font-weight: 600;
-            color: var(--text);
-            margin-top: 0.4rem;
+            color: #fff;
+            margin-top: 0.6rem;
         }
         .page-header p {
-            font-size: 0.88rem;
+            font-size: 0.95rem;
             color: var(--muted);
-            margin-top: 0.25rem;
+            margin-top: 0.4rem;
         }
 
         /* ── Main Layout ── */
@@ -81,16 +76,16 @@
             background: var(--card-bg);
             border-radius: var(--radius);
             border: 1px solid var(--border);
-            padding: 1.5rem;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            padding: 1.8rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
         }
         .card-title {
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.8px;
-            color: var(--accent);
-            margin-bottom: 1rem;
+            color: var(--primary);
+            margin-bottom: 1.2rem;
             padding-bottom: 0.6rem;
             border-bottom: 1px solid var(--border);
         }
@@ -103,24 +98,26 @@
             text-align: center;
         }
         #qrcode {
-            margin: 1rem auto;
+            margin: 1.2rem auto;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        #qrcode canvas, #qrcode img {
-            border: 6px solid var(--light-bg);
+        #qrcode img {
+            border: 6px solid #fff;
             border-radius: 10px;
-            box-shadow: 0 4px 16px rgba(107,58,42,0.15);
+            box-shadow: 0 4px 20px rgba(182, 137, 91, 0.35);
+            max-width: 100%;
+            height: auto;
         }
         .qr-hint {
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             color: var(--muted);
-            margin-top: 0.75rem;
+            margin-top: 0.8rem;
             line-height: 1.6;
         }
         .qr-scan-label {
-            background: var(--light-bg);
+            background: #1a1a1a;
             border: 1px solid var(--border);
             border-radius: 8px;
             padding: 0.5rem 1rem;
@@ -135,16 +132,16 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            padding: 0.5rem 0;
+            padding: 0.6rem 0;
             border-bottom: 1px dashed var(--border);
-            font-size: 0.88rem;
+            font-size: 0.9rem;
             gap: 0.5rem;
         }
         .info-row:last-of-type { border-bottom: none; }
         .info-label { color: var(--muted); flex-shrink: 0; }
         .info-value {
             font-weight: 500;
-            color: var(--text);
+            color: #fff;
             text-align: right;
         }
 
@@ -153,35 +150,35 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.45rem 0;
+            padding: 0.55rem 0;
             border-bottom: 1px dashed var(--border);
-            font-size: 0.85rem;
+            font-size: 0.88rem;
         }
         .item-row:last-child { border-bottom: none; }
-        .item-name { color: var(--text); font-weight: 500; }
+        .item-name { color: #fff; font-weight: 500; }
         .item-qty  { color: var(--muted); font-size: 0.8rem; margin-top: 2px; }
         .item-price { font-weight: 600; color: var(--primary); white-space: nowrap; }
 
         .total-row {
             display: flex;
             justify-content: space-between;
-            padding: 0.75rem 0 0.25rem;
-            margin-top: 0.5rem;
+            padding: 0.9rem 0 0.25rem;
+            margin-top: 0.8rem;
             border-top: 2px solid var(--primary);
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 700;
             color: var(--primary);
         }
 
         /* ── Status Info ── */
         .status-info {
-            background: linear-gradient(135deg, #fff8f0 0%, #fef3e8 100%);
-            border: 1px solid #e8c99a;
+            background: #16120e;
+            border: 1px solid #5c3c24;
             border-radius: 10px;
-            padding: 0.9rem 1.1rem;
-            margin-top: 1.2rem;
-            font-size: 0.83rem;
-            color: var(--text);
+            padding: 1rem 1.2rem;
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: #ddd;
             line-height: 1.7;
         }
         .status-info strong { color: var(--primary); }
@@ -192,10 +189,11 @@
             display: flex;
             flex-direction: column;
             gap: 0.75rem;
+            width: 100%;
         }
         .btn-confirm {
             width: 100%;
-            padding: 0.85rem;
+            padding: 0.9rem;
             background: var(--primary);
             color: #fff;
             border: none;
@@ -207,13 +205,13 @@
             letter-spacing: 0.3px;
             transition: background 0.2s, transform 0.1s;
         }
-        .btn-confirm:hover  { background: #4e2a1e; }
+        .btn-confirm:hover  { background: #966f44; }
         .btn-confirm:active { transform: scale(0.98); }
-        .btn-confirm:disabled { background: #b0a09a; cursor: not-allowed; }
+        .btn-confirm:disabled { background: #555; color: #888; cursor: not-allowed; }
 
         .btn-back {
             width: 100%;
-            padding: 0.75rem;
+            padding: 0.8rem;
             background: transparent;
             color: var(--muted);
             border: 1px solid var(--border);
@@ -226,14 +224,14 @@
             text-align: center;
             transition: border-color 0.2s, color 0.2s;
         }
-        .btn-back:hover { border-color: var(--accent); color: var(--accent); }
+        .btn-back:hover { border-color: var(--primary); color: var(--primary); }
 
         /* ── Loading overlay ── */
         .overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.45);
+            background: rgba(0,0,0,0.75);
             z-index: 9999;
             align-items: center;
             justify-content: center;
@@ -244,7 +242,7 @@
         .spinner {
             width: 48px; height: 48px;
             border: 5px solid rgba(255,255,255,0.3);
-            border-top-color: #fff;
+            border-top-color: var(--primary);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
@@ -266,9 +264,11 @@
 
         <!-- QR Code Card -->
         <div class="card qr-card">
-            <div class="card-title">🔖 QR Code Pesanan</div>
-            <div id="qrcode"></div>
-            <div class="qr-scan-label">📱 Scan dengan kamera HP / aplikasi QR reader</div>
+            <div class="card-title">QR Code Pesanan</div>
+            <div id="qrcode">
+                <img id="qrImage" alt="QR Code Pesanan" style="display: none;" />
+            </div>
+            <div class="qr-scan-label">Scan dengan kamera HP / aplikasi QR reader</div>
             <p class="qr-hint">
                 QR Code ini berisi detail pesanan Anda.<br>
                 Tunjukkan kepada kasir untuk verifikasi dan proses pembayaran.
@@ -277,10 +277,10 @@
             <!-- Tombol konfirmasi bayar -->
             <div class="btn-group">
                 <button class="btn-confirm" id="btnConfirm">
-                    ✅ Konfirmasi &amp; Kirim Pesanan
+                    Konfirmasi &amp; Kirim Pesanan
                 </button>
                 <a href="<?= base_url('/') ?>" class="btn-back" id="btnBack">
-                    ← Kembali ke Menu
+                    Kembali ke Menu
                 </a>
             </div>
         </div>
@@ -312,7 +312,7 @@
             </div>
 
             <!-- Daftar item -->
-            <div class="card-title" style="margin-top:1.2rem;">🛒 Item Pesanan</div>
+            <div class="card-title" style="margin-top:1.2rem;">Item Pesanan</div>
             <div class="items-list" id="itemsList">
                 <?php foreach ($order['items'] as $item): ?>
                     <div class="item-row">
@@ -335,7 +335,7 @@
 
             <!-- Info pembayaran -->
             <div class="status-info">
-                <strong>💡 Cara Pembayaran:</strong><br>
+                <strong>Cara Pembayaran:</strong><br>
                 1. Tunjukkan QR Code ini kepada kasir.<br>
                 2. Klik <strong>"Konfirmasi &amp; Kirim Pesanan"</strong> untuk mendaftarkan pesanan ke sistem.<br>
                 3. Kasir akan memverifikasi dan memproses pembayaran Anda.<br>
@@ -401,15 +401,10 @@
         // Generate QR Code
         // ===================================================
         const qrPayload = buildQrPayload(orderData);
-
-        new QRCode(document.getElementById('qrcode'), {
-            text        : qrPayload,
-            width       : 220,
-            height      : 220,
-            colorDark   : '#3d1f0f',
-            colorLight  : '#faf6f0',
-            correctLevel: QRCode.CorrectLevel.M
-        });
+        
+        const qrImage = document.getElementById('qrImage');
+        qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(qrPayload)}`;
+        qrImage.style.display = 'block';
 
         // ===================================================
         // Konfirmasi bayar — AJAX POST ke /checkout/confirm
@@ -441,16 +436,15 @@
                 } else {
                     alert('Gagal mengirim pesanan: ' + (result.message || 'Silakan coba lagi.'));
                     btn.disabled    = false;
-                    btn.textContent = '✅ Konfirmasi & Kirim Pesanan';
+                    btn.textContent = 'Konfirmasi & Kirim Pesanan';
                 }
             } catch (err) {
                 overlay.classList.remove('show');
                 alert('Terjadi kesalahan koneksi. Silakan coba lagi.');
                 btn.disabled    = false;
-                btn.textContent = '✅ Konfirmasi & Kirim Pesanan';
+                btn.textContent = 'Konfirmasi & Kirim Pesanan';
             }
-        });
-    </script>
+        });    </script>
 
 </body>
 </html>
