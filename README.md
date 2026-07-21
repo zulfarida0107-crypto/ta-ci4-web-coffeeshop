@@ -94,8 +94,9 @@ Gunakan kolom di bawah ini untuk menambahkan tangkapan layar (screenshot), anima
 | **Halaman Beranda** | ![Beranda](documentation/homepage_hero.png) | Halaman utama dengan visualisasi modern hero banner Classic Coffee. |
 | **Tentang Kami** | ![Tentang Kami](documentation/tentang_kami.png) | Halaman informasi profil, dedikasi, dan latar belakang kedai kopi. |
 | **Menu Kami** | ![Menu Kami](documentation/menu_kami.png) | Daftar produk kopi, non-kopi, dan pastry dengan filter dinamis. |
-| **Detail Produk & Keranjang** | *(Masukkan gambar di sini)* | Pop-up detail menu dan pengelolaan item belanja pelanggan. |
-| **QR Code & Detail Pesanan** | *(Masukkan gambar di sini)* | Halaman pembayaran yang menampilkan data pesanan dan kode QR. |
-| **Modal Sukses Transaksi** | *(Masukkan gambar di sini)* | Floating modal sukses yang muncul setelah kasir mengonfirmasi pesanan. |
+| **Detail Produk & Keranjang** | ![Detail & Keranjang](documentation/keranjang_belanja.png) | Pop-up detail menu dan pengelolaan item belanja pelanggan. |
+| **Halaman Kontak** | ![Kontak](documentation/halaman_kontak.png) | Formulir saran/masukan pelanggan terintegrasi dengan Google Maps. |
+| **QR Code & Detail Pesanan** | ![Halaman Pembayaran](documentation/halaman_pembayaran.png) | Halaman pembayaran yang menampilkan data pesanan dan kode QR. |
+| **Modal Sukses Transaksi** | ![Modal Sukses](documentation/modal_sukses.png) | Floating modal sukses yang muncul setelah kasir mengonfirmasi pesanan. |
 | **Modal Gagal Transaksi** | *(Masukkan gambar di sini)* | Floating modal yang menginfokan kegagalan sistem lengkap dengan alasannya. |
 | **Laporan Uji Otomatis (Selenium)** | ![Laporan Testing](documentation/pytest_result.png) | Bukti eksekusi uji otomatis menggunakan Selenium yang menunjukkan 39 test case sukses (PASSED). |
