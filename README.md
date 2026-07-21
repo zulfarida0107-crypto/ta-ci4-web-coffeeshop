@@ -32,6 +32,20 @@ Classic Coffee Customer Web — A responsive CodeIgniter 4 web application for c
    ```
 6. Buka `http://localhost:8081` di browser Anda.
 
+## Deployment / Publikasi via GitHub
+
+Aplikasi web CodeIgniter 4 memerlukan server yang mendukung eksekusi PHP dan database MySQL (seperti VPS, Shared Hosting, cPanel, atau Cloud Hosting). Anda dapat memanfaatkan GitHub untuk mempermudah proses deployment:
+
+### Opsi 1: Integrasi Git Sync (cPanel / Shared Hosting)
+1. Hubungkan repository GitHub Anda dengan cPanel / hosting provider Anda melalui menu **Git Version Control**.
+2. Lakukan clone kode langsung ke folder `public_html` hosting Anda.
+3. Gunakan git pull untuk melakukan pembaruan kode secara instan saat ada perubahan baru di GitHub.
+
+### Opsi 2: Otomatisasi CI/CD dengan GitHub Actions
+Anda dapat membuat workflow deployment otomatis (misalnya mengunggah kode ke server hosting via FTP atau SSH setiap kali Anda melakukan push ke branch `main`):
+1. Buat berkas konfigurasi `.github/workflows/deploy.yml` di dalam repository.
+2. Konfigurasikan secret environment (seperti FTP_SERVER, FTP_USERNAME, FTP_PASSWORD) di menu Settings > Secrets and Variables > Actions pada repository GitHub Anda.
+
 ## Pengujian & Uji Otomatis (Testing)
 
 Proyek ini dilengkapi dengan skrip pengujian otomatis berbasis **Selenium WebDriver** dan **pytest** untuk menjamin fungsionalitas seluruh alur fitur web (39 skenario uji).
