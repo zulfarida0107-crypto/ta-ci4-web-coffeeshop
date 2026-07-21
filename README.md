@@ -91,9 +91,11 @@ Gunakan kolom di bawah ini untuk menambahkan tangkapan layar (screenshot), anima
 
 | Fitur | Tampilan Dokumentasi | Deskripsi |
 | --- | --- | --- |
-| **Halaman Beranda** | *(Masukkan gambar di sini)* | Halaman utama dengan daftar produk unggulan dan filter menu interaktif. |
+| **Halaman Beranda** | ![Beranda](documentation/homepage_hero.png) | Halaman utama dengan visualisasi modern hero banner Classic Coffee. |
+| **Tentang Kami** | ![Tentang Kami](documentation/tentang_kami.png) | Halaman informasi profil, dedikasi, dan latar belakang kedai kopi. |
+| **Menu Kami** | ![Menu Kami](documentation/menu_kami.png) | Daftar produk kopi, non-kopi, dan pastry dengan filter dinamis. |
 | **Detail Produk & Keranjang** | *(Masukkan gambar di sini)* | Pop-up detail menu dan pengelolaan item belanja pelanggan. |
 | **QR Code & Detail Pesanan** | *(Masukkan gambar di sini)* | Halaman pembayaran yang menampilkan data pesanan dan kode QR. |
 | **Modal Sukses Transaksi** | *(Masukkan gambar di sini)* | Floating modal sukses yang muncul setelah kasir mengonfirmasi pesanan. |
 | **Modal Gagal Transaksi** | *(Masukkan gambar di sini)* | Floating modal yang menginfokan kegagalan sistem lengkap dengan alasannya. |
-| **Laporan Uji Otomatis (Selenium)** | *(Masukkan gambar di sini)* | File laporan `report_ci4.html` yang merangkum hasil eksekusi uji otomatis seluruh modul web. |
+| **Laporan Uji Otomatis (Selenium)** | ![Laporan Testing](documentation/pytest_result.png) | Bukti eksekusi uji otomatis menggunakan Selenium yang menunjukkan 39 test case sukses (PASSED). |
