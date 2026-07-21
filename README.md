@@ -99,5 +99,5 @@ Gunakan kolom di bawah ini untuk menambahkan tangkapan layar (screenshot), anima
 | **Cuplikan Kode Form Kontak** | ![Cuplikan Kode](documentation/contact_controller_snippet.png) | Potongan kode program PHP Controller CI4 untuk memproses pengiriman saran pelanggan ke database backend. |
 | **QR Code & Detail Pesanan** | ![Halaman Pembayaran](documentation/halaman_pembayaran.png) | Halaman pembayaran yang menampilkan data pesanan dan kode QR. |
 | **Modal Sukses Transaksi** | ![Modal Sukses](documentation/modal_sukses.png) | Floating modal sukses yang muncul setelah kasir mengonfirmasi pesanan. |
-| **Modal Gagal Transaksi** | ![Modal Gagal](documentation/modal_gagal.png) | Floating modal merah yang muncul saat koneksi ke server API gagal, lengkap dengan keterangan penyebab kegagalannya. |
+| **Modal Gagal Transaksi** | ![Modal Gagal](documentation/modal_gagal.png) | Floating modal merah "Pesanan Gagal Dikirim!" yang muncul ketika server API tidak dapat dijangkau. |
 | **Laporan Uji Otomatis (Selenium)** | ![Laporan Testing](documentation/pytest_result.png) | Bukti eksekusi uji otomatis menggunakan Selenium yang menunjukkan 39 test case sukses (PASSED). |
