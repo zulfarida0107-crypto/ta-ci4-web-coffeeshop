@@ -1,69 +1,103 @@
-# CodeIgniter 4 Application Starter
+# Classic Coffee Customer Web
 
-## What is CodeIgniter?
+Classic Coffee Customer Web — A responsive CodeIgniter 4 web application for customer ordering, featuring product highlights, menu filtering, instant cart management, and dynamic QR Code invoice generation.
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+## Fitur Utama
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+- **Produk Unggulan & Menu Kami:** Pemisahan alur yang jelas antara kopi unggulan nusantara dengan daftar menu reguler.
+- **Sistem Keranjang Belanja:** Manajemen keranjang belanja interaktif berbasis Alpine.js di sisi client.
+- **Konfirmasi Pembayaran QR:** Halaman pembayaran dengan QR Code dinamis berbasis server-side API, lengkap dengan latar belakang doodle artistik.
+- **Floating Status Modal:** Notifikasi instan (sukses/gagal/pending) yang muncul melayang di atas halaman QR Code tanpa mengalihkan halaman.
+- **Formulir Hubungi Kami:** Integrasi kontak langsung pelanggan ke database.
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+## Keterangan Operasi CRUD
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+Pada sisi website customer (CodeIgniter 4), operasi data dibagi menjadi pengelolaan data lokal sisi client (Keranjang Belanja) dan pengiriman data ke server backend:
 
-## Installation & updates
+1. **Modul Keranjang Belanja (CRUD Lokal Sisi Client):**
+   - **Create:** Menambahkan produk kopi atau makanan ringan ke keranjang belanja saat mengeklik tombol "Beli" / "Add to Cart".
+   - **Read:** Membaca dan menampilkan daftar item belanja yang terpilih beserta ringkasan harga pada widget keranjang.
+   - **Update:** Memperbarui kuantitas produk (menambah atau mengurangi jumlah item) secara dinamis di keranjang.
+   - **Delete:** Menghapus item tertentu atau mengosongkan seluruh keranjang belanja.
+2. **Modul Checkout & Pesanan (Create):**
+   - **Create:** Mengirimkan data pemesanan (nama, nomor telepon, email, daftar item, dan total harga) ke backend Spring Boot untuk disimpan sebagai transaksi baru.
+3. **Modul Hubungi Kami (Create):**
+   - **Create:** Mengirimkan formulir kontak dari pelanggan (nama, email, subjek, dan isi pesan) ke server database melalui backend API.
+4. **Modul Katalog Menu (Read-Only):**
+   - **Read:** Membaca data katalog menu produk yang aktif dari server backend untuk ditampilkan secara dinamis kepada pelanggan.
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+## Teknologi
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+- **Framework:** CodeIgniter 4 (PHP 8.2)
+- **Frontend:** Vanilla CSS, Alpine.js, HTML5
+- **Database:** MySQL (dihubungkan via Spring Boot Server)
+- **Web Server:** Apache (Laragon / XAMPP)
 
-## Setup
+## Panduan Instalasi & Menjalankan Project
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+1. Pastikan Laragon atau XAMPP Anda aktif dengan PHP 8.2+.
+2. Clone repository ini ke dalam direktori server Anda (misal `C:/laragon/www/ta-ci4-web-coffeeshop`).
+3. Salin file `.env.example` menjadi `.env` dan sesuaikan pengaturan database serta `app.baseURL`.
+4. Jalankan perintah composer untuk instalasi dependensi jika diperlukan:
+   ```bash
+   composer install
+   ```
+5. Jalankan server lokal melalui terminal:
+   ```bash
+   php spark serve --port 8081
+   ```
+6. Buka `http://localhost:8081` di browser Anda.
 
-## Important Change with index.php
+## Deployment / Publikasi via GitHub
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+Aplikasi web CodeIgniter 4 memerlukan server yang mendukung eksekusi PHP dan database MySQL (seperti VPS, Shared Hosting, cPanel, atau Cloud Hosting). Anda dapat memanfaatkan GitHub untuk mempermudah proses deployment:
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+### Opsi 1: Integrasi Git Sync (cPanel / Shared Hosting)
+1. Hubungkan repository GitHub Anda dengan cPanel / hosting provider Anda melalui menu **Git Version Control**.
+2. Lakukan clone kode langsung ke folder `public_html` hosting Anda.
+3. Gunakan git pull untuk melakukan pembaruan kode secara instan saat ada perubahan baru di GitHub.
 
-**Please** read the user guide for a better explanation of how CI4 works!
+### Opsi 2: Otomatisasi CI/CD dengan GitHub Actions
+Anda dapat membuat workflow deployment otomatis (misalnya mengunggah kode ke server hosting via FTP atau SSH setiap kali Anda melakukan push ke branch `main`):
+1. Buat berkas konfigurasi `.github/workflows/deploy.yml` di dalam repository.
+2. Konfigurasikan secret environment (seperti FTP_SERVER, FTP_USERNAME, FTP_PASSWORD) di menu Settings > Secrets and Variables > Actions pada repository GitHub Anda.
 
-## Repository Management
+## Pengujian & Uji Otomatis (Testing)
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+Proyek ini dilengkapi dengan skrip pengujian otomatis berbasis **Selenium WebDriver** dan **pytest** untuk menjamin fungsionalitas seluruh alur fitur web (39 skenario uji).
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+### Prasyarat Testing
+1. Pastikan Python 3.x telah terpasang pada komputer Anda.
+2. Pasang modul Python yang diperlukan melalui pip:
+   ```bash
+   pip install selenium pytest pytest-html
+   ```
+3. Pastikan driver browser (seperti ChromeDriver untuk Google Chrome) sesuai dengan versi browser Anda dan sudah terkonfigurasi.
 
-## Server Requirements
+### Menjalankan Uji Otomatis
+1. Jalankan aplikasi web CodeIgniter 4 Anda pada port `8081`.
+2. Jalankan perintah berikut melalui terminal:
+   ```bash
+   cd c:/Dokumen/ta-server-coffeeshop/selenium
+   pytest test_ci4_web.py -v --html=report_ci4.html --self-contained-html
+   ```
+3. Hasil pengujian otomatis akan terekam secara detail dan laporan interaktif akan dibuat pada file `report_ci4.html`.
 
-PHP version 8.2 or higher is required, with the following extensions installed:
+---
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+## Dokumentasi & Demo
 
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - The end of life date for PHP 8.1 was December 31, 2025.
-> - If you are still using below PHP 8.2, you should upgrade immediately.
-> - The end of life date for PHP 8.2 will be December 31, 2026.
+Gunakan kolom di bawah ini untuk menambahkan tangkapan layar (screenshot), animasi GIF, atau video dokumentasi aplikasi Anda.
 
-Additionally, make sure that the following extensions are enabled in your PHP:
-
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+| Fitur | Tampilan Dokumentasi | Deskripsi |
+| --- | --- | --- |
+| **Halaman Beranda** | ![Beranda](documentation/homepage_hero.png) | Halaman utama dengan visualisasi modern hero banner Classic Coffee. |
+| **Tentang Kami** | ![Tentang Kami](documentation/tentang_kami.png) | Halaman informasi profil, dedikasi, dan latar belakang kedai kopi. |
+| **Menu Kami** | ![Menu Kami](documentation/menu_kami.png) | Daftar produk kopi, non-kopi, dan pastry dengan filter dinamis. |
+| **Detail Produk & Keranjang** | ![Detail & Keranjang](documentation/keranjang_belanja.png) | Pop-up detail menu dan pengelolaan item belanja pelanggan. |
+| **Halaman Kontak** | ![Kontak](documentation/halaman_kontak.png) | Formulir saran/masukan pelanggan terintegrasi dengan Google Maps. |
+| **Cuplikan Kode Form Kontak** | ![Cuplikan Kode](documentation/contact_controller_snippet.png) | Potongan kode program PHP Controller CI4 untuk memproses pengiriman saran pelanggan ke database backend. |
+| **QR Code & Detail Pesanan** | ![Halaman Pembayaran](documentation/halaman_pembayaran.png) | Halaman pembayaran yang menampilkan data pesanan dan kode QR. |
+| **Modal Sukses Transaksi** | ![Modal Sukses](documentation/modal_sukses.png) | Floating modal sukses yang muncul setelah kasir mengonfirmasi pesanan. |
+| **Modal Gagal Transaksi** | ![Modal Gagal](documentation/modal_gagal.png) | Floating modal merah "Pesanan Gagal Dikirim!" yang muncul ketika server API tidak dapat dijangkau. |
+| **Laporan Uji Otomatis (Selenium)** | ![Laporan Testing](documentation/pytest_result.png) | Bukti eksekusi uji otomatis menggunakan Selenium yang menunjukkan 39 test case sukses (PASSED). |

@@ -226,7 +226,8 @@ document.addEventListener('click', function (e) {
     searchForm.classList.remove('active');
   }
 
-  if (!scBtn.contains(e.target) && !shoppingCart.contains(e.target)) {
+  const path = e.composedPath ? e.composedPath() : [];
+  if (!scBtn.contains(e.target) && !path.includes(shoppingCart) && !shoppingCart.contains(e.target)) {
     shoppingCart.classList.remove('active');
   }
 });

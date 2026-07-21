@@ -23,7 +23,8 @@ document.addEventListener("alpine:init", () => {
             img_src: item.img_src || '',
             price: parseInt(item.harga || item.price || 0),
             desc: item.deskripsi || item.desc || '',
-            kategori: item.kategori || ''
+            kategori: item.kategori || '',
+            isUnggulan: true
         }));
     }
 
@@ -78,6 +79,7 @@ document.addEventListener("alpine:init", () => {
                 price    : parseInt(item.harga || item.price || 0),
                 desc     : item.deskripsi  || item.desc || '',
                 kategori : normalizedKategori,
+                isUnggulan: false
             };
         });
     }
@@ -251,7 +253,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     checkoutButton.addEventListener("click", async function (e) {
         e.preventDefault();
-        
+
         if (checkoutButton.disabled) {
             alert('Harap isi semua detail pelanggan!');
             return;
@@ -261,39 +263,50 @@ document.addEventListener('DOMContentLoaded', function () {
         const data = new URLSearchParams(formData);
         const objData = Object.fromEntries(data);
 
-        // Remap item_details ke format yang diterima Midtrans: {id, price, quantity, name}
+        // Normalisasi item ke format {id, price, quantity, name}
         const rawItems = JSON.parse(objData.items);
-        const midtransItems = rawItems.map(item => ({
+        const normalizedItems = rawItems.map(item => ({
             id:       String(item.id),
             price:    parseInt(item.price),
-            quantity: parseInt(item.quantity),
+            quantity: parseInt(item.quantity) || 1,
             name:     item.name
         }));
-        data.set('items', JSON.stringify(midtransItems));
+        data.set('items', JSON.stringify(normalizedItems));
+
+        // Ubah teks tombol ke loading state
+        checkoutButton.disabled   = true;
+        checkoutButton.textContent = 'Memproses...';
 
         try {
             const response = await fetch("/checkout", {
                 method: "POST",
                 body: data,
             });
-            
+
             const result = await response.json();
-            
+
             if (result.status === 'success') {
-                // Bersihkan keranjang
-                Alpine.store("cart").items = [];
-                Alpine.store("cart").total = 0;
+                // Bersihkan keranjang sebelum redirect ke halaman QR Payment
+                Alpine.store("cart").items    = [];
+                Alpine.store("cart").total    = 0;
                 Alpine.store("cart").quantity = 0;
-                
-                // Redirect ke halaman sukses
-                alert('Pesanan berhasil dibuat! Silakan menuju kasir untuk melakukan pembayaran.');
-                window.location.href = "/checkout/success";
+
+                // Tutup panel cart jika terbuka
+                const cartPanel = document.querySelector('.shopping-cart');
+                if (cartPanel) cartPanel.style.display = 'none';
+
+                // Redirect ke halaman QR Code pembayaran
+                window.location.href = result.redirect || "/checkout/payment";
             } else {
                 alert("Checkout gagal: " + (result.message || "Unknown error"));
+                checkoutButton.disabled   = false;
+                checkoutButton.textContent = 'Checkout';
             }
         } catch (err) {
             console.error("Error during checkout:", err);
             alert("Terjadi kesalahan saat melakukan checkout. Cek console untuk detail.");
+            checkoutButton.disabled   = false;
+            checkoutButton.textContent = 'Checkout';
         }
     });
 });
