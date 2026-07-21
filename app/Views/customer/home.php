@@ -72,7 +72,7 @@
     <div class="shopping-cart">
       <template x-for="(item, index) in $store.cart.items" x-key="index">
         <div class="cart-item">
-          <img :src="getProductImgSrc(item.img)" :alt="item.name" />
+          <img :src="item.isUnggulan ? getProductImgSrc(item.img) : getMenuImgSrc(item.img, item.img_src)" :alt="item.name" />
           <div class="item-detail">
             <h3 x-text="item.name"></h3>
             <div class="item-price">
