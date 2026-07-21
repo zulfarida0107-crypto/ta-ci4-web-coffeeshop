@@ -12,13 +12,13 @@
 
     <style>
         :root {
-            --primary:   #6b3a2a; /* Dark coffee brown */
-            --accent:    #b6895b; /* Gold/brown accent */
-            --bg:        #ebdcd0; /* Fallback light background */
-            --card-bg:   rgba(255, 255, 255, 0.96); /* Readable card background over pattern */
-            --text:      #3d1f0f; /* Dark brown text matching the pattern drawing */
-            --muted:     #6b5a50; /* Muted brown */
-            --border:    #ebdcd0; /* Light border */
+            --primary:   #6b3a2a; /* Original dark brown */
+            --accent:    #b6895b; /* Original gold */
+            --light-bg:  #faf6f0; /* Original light beige */
+            --card-bg:   #ffffff; /* Original white card */
+            --text:      #2d1a0e; /* Original dark brown text */
+            --muted:     #7a6655; /* Original muted text */
+            --border:    #6b3a2a; /* Thicker dark brown border */
             --radius:    14px;
         }
 
@@ -26,8 +26,7 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: url('<?= base_url('img/bg-pattern.jpg') ?>') repeat;
-            background-size: 450px;
+            background: var(--light-bg);
             color: var(--text);
             min-height: 100vh;
             display: flex;
@@ -35,17 +34,28 @@
             align-items: center;
             justify-content: flex-start;
             padding: 2rem 1rem 4rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ── Blurred Background Doodle ── */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('<?= base_url('img/bg_doodle.jpg') ?>');
+            background-size: cover;
+            background-position: center;
+            filter: blur(8px);
+            opacity: 0.18;
+            z-index: -1;
+            pointer-events: none;
         }
 
         /* ── Header ── */
         .page-header {
             text-align: center;
             margin-bottom: 2.2rem;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 1rem 2rem;
-            border-radius: 12px;
-            border: 3px solid var(--primary);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
         .page-header .logo {
             font-size: 2.2rem;
@@ -82,19 +92,19 @@
         .card {
             background: var(--card-bg);
             border-radius: var(--radius);
-            border: 3px solid var(--primary); /* Thick border for grid cards */
+            border: 2.5px solid var(--border); /* Thickened border */
             padding: 1.8rem;
-            box-shadow: 0 8px 30px rgba(107, 58, 42, 0.15);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
         .card-title {
             font-size: 0.9rem;
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.8px;
             color: var(--primary);
             margin-bottom: 1.2rem;
             padding-bottom: 0.6rem;
-            border-bottom: 2px solid var(--primary);
+            border-bottom: 2.5px solid var(--border); /* Thickened divider */
         }
 
         /* ── QR Section ── */
@@ -124,13 +134,13 @@
             line-height: 1.6;
         }
         .qr-scan-label {
-            background: #fdfaf7;
-            border: 1px solid var(--accent);
+            background: var(--light-bg);
+            border: 2px solid var(--border); /* Thickened border */
             border-radius: 8px;
             padding: 0.5rem 1rem;
             font-size: 0.82rem;
             color: var(--primary);
-            font-weight: 500;
+            font-weight: 600;
             margin-top: 0.6rem;
         }
 
@@ -140,14 +150,14 @@
             justify-content: space-between;
             align-items: flex-start;
             padding: 0.6rem 0;
-            border-bottom: 1px dashed var(--accent);
+            border-bottom: 1.5px dashed var(--accent); /* Thickened dashed divider */
             font-size: 0.9rem;
             gap: 0.5rem;
         }
         .info-row:last-of-type { border-bottom: none; }
         .info-label { color: var(--muted); flex-shrink: 0; }
         .info-value {
-            font-weight: 500;
+            font-weight: 600;
             color: var(--text);
             text-align: right;
         }
@@ -158,7 +168,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 0.55rem 0;
-            border-bottom: 1px dashed var(--accent);
+            border-bottom: 1.5px dashed var(--accent); /* Thickened dashed divider */
             font-size: 0.88rem;
         }
         .item-row:last-child { border-bottom: none; }
@@ -171,7 +181,7 @@
             justify-content: space-between;
             padding: 0.9rem 0 0.25rem;
             margin-top: 0.8rem;
-            border-top: 2px solid var(--primary);
+            border-top: 2.5px solid var(--border); /* Thickened total top border */
             font-size: 1.1rem;
             font-weight: 700;
             color: var(--primary);
@@ -179,8 +189,8 @@
 
         /* ── Status Info ── */
         .status-info {
-            background: #fdfaf7;
-            border: 1px solid var(--accent);
+            background: #fff8f0;
+            border: 2px solid var(--accent); /* Thickened border */
             border-radius: 10px;
             padding: 1rem 1.2rem;
             margin-top: 1.5rem;
@@ -212,16 +222,16 @@
             letter-spacing: 0.3px;
             transition: background 0.2s, transform 0.1s;
         }
-        .btn-confirm:hover  { background: #522b1f; }
+        .btn-confirm:hover  { background: #4e2a1e; }
         .btn-confirm:active { transform: scale(0.98); }
-        .btn-confirm:disabled { background: #dcd4cf; color: #a59c96; cursor: not-allowed; }
+        .btn-confirm:disabled { background: #b0a09a; color: #fff; cursor: not-allowed; }
 
         .btn-back {
             width: 100%;
             padding: 0.8rem;
             background: transparent;
             color: var(--muted);
-            border: 1px solid var(--accent);
+            border: 2px solid var(--border); /* Thickened border */
             border-radius: 10px;
             font-size: 0.88rem;
             font-family: 'Poppins', sans-serif;
@@ -229,16 +239,16 @@
             text-decoration: none;
             display: block;
             text-align: center;
-            transition: border-color 0.2s, color 0.2s, background-color 0.2s;
+            transition: border-color 0.2s, color 0.2s;
         }
-        .btn-back:hover { border-color: var(--primary); color: var(--primary); background: rgba(107, 58, 42, 0.05); }
+        .btn-back:hover { border-color: var(--accent); color: var(--accent); }
 
         /* ── Loading overlay ── */
         .overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.6);
+            background: rgba(0,0,0,0.75);
             z-index: 9999;
             align-items: center;
             justify-content: center;
