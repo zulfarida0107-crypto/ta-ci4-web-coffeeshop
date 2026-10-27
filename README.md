@@ -2,86 +2,86 @@
 
 Classic Coffee Customer Web — A responsive CodeIgniter 4 web application for customer ordering, featuring product highlights, menu filtering, instant cart management, and dynamic QR Code invoice generation.
 
-## Fitur Utama
+## Main Features
 
-- **Produk Unggulan & Menu Kami:** Pemisahan alur yang jelas antara kopi unggulan nusantara dengan daftar menu reguler.
-- **Sistem Keranjang Belanja:** Manajemen keranjang belanja interaktif berbasis Alpine.js di sisi client.
-- **Konfirmasi Pembayaran QR:** Halaman pembayaran dengan QR Code dinamis berbasis server-side API, lengkap dengan latar belakang doodle artistik.
-- **Floating Status Modal:** Notifikasi instan (sukses/gagal/pending) yang muncul melayang di atas halaman QR Code tanpa mengalihkan halaman.
-- **Formulir Hubungi Kami:** Integrasi kontak langsung pelanggan ke database.
+- **Featured Products & Our Menu:** Clear separation of workflows between archipelago signature coffees and regular menu items.
+- **Shopping Cart System:** Interactive, client-side Alpine.js-based shopping cart management.
+- **QR Payment Confirmation:** Payment page featuring a server-side API-driven dynamic QR Code, complete with an artistic doodle background.
+- **Floating Status Modal:** Instant notifications (success/failure/pending) popping up as floating elements over the QR Code page without redirecting.
+- **Contact Us Form:** Direct integration of customer inquiries into the database.
 
-## Keterangan Operasi CRUD
+## CRUD Operations Description
 
-Pada sisi website customer (CodeIgniter 4), operasi data dibagi menjadi pengelolaan data lokal sisi client (Keranjang Belanja) dan pengiriman data ke server backend:
+On the customer web side (CodeIgniter 4), data operations are divided into client-side local data management (Shopping Cart) and data transmission to the backend server:
 
-1. **Modul Keranjang Belanja (CRUD Lokal Sisi Client):**
-   - **Create:** Menambahkan produk kopi atau makanan ringan ke keranjang belanja saat mengeklik tombol "Beli" / "Add to Cart".
-   - **Read:** Membaca dan menampilkan daftar item belanja yang terpilih beserta ringkasan harga pada widget keranjang.
-   - **Update:** Memperbarui kuantitas produk (menambah atau mengurangi jumlah item) secara dinamis di keranjang.
-   - **Delete:** Menghapus item tertentu atau mengosongkan seluruh keranjang belanja.
-2. **Modul Checkout & Pesanan (Create):**
-   - **Create:** Mengirimkan data pemesanan (nama, nomor telepon, email, daftar item, dan total harga) ke backend Spring Boot untuk disimpan sebagai transaksi baru.
-3. **Modul Hubungi Kami (Create):**
-   - **Create:** Mengirimkan formulir kontak dari pelanggan (nama, email, subjek, dan isi pesan) ke server database melalui backend API.
-4. **Modul Katalog Menu (Read-Only):**
-   - **Read:** Membaca data katalog menu produk yang aktif dari server backend untuk ditampilkan secara dinamis kepada pelanggan.
+1. **Shopping Cart Module (Client-Side Local CRUD):**
+   - **Create:** Adds coffee products or snacks to the shopping cart upon clicking the "Buy" / "Add to Cart" button.
+   - **Read:** Reads and displays the list of selected shopping items along with price summaries in the cart widget.
+   - **Update:** Dynamically updates product quantities (incrementing or decrementing item counts) in the cart.
+   - **Delete:** Removes specific items or clears the entire shopping cart.
+2. **Checkout & Order Module (Create):**
+   - **Create:** Transmits order data (name, phone number, email, item list, and total price) to the Spring Boot backend to be stored as a new transaction.
+3. **Contact Us Module (Create):**
+   - **Create:** Sends customer contact forms (name, email, subject, and message body) to the database server via backend API.
+4. **Menu Catalog Module (Read-Only):**
+   - **Read:** Fetches active product catalog data from the backend server for dynamic display to customers.
 
-## Teknologi
+## Technology
 
 - **Framework:** CodeIgniter 4 (PHP 8.2)
 - **Frontend:** Vanilla CSS, Alpine.js, HTML5
-- **Database:** MySQL (dihubungkan via Spring Boot Server)
+- **Database:** MySQL (connected via Spring Boot Server)
 - **Web Server:** Apache (Laragon / XAMPP)
 
-## Arsitektur Docker
+## Docker Architecture
 
-Proyek ini telah dikontainerisasi menggunakan **Docker** untuk memastikan lingkungan pengembangan dan produksi yang konsisten. Sistem berjalan di atas tiga container utama yang saling terhubung dalam satu jaringan (network) Docker:
+This project has been containerized using **Docker** to ensure a consistent development and production environment. The system runs on three main interconnected containers within a single Docker network:
 
-1. **`ta-database-coffeeshop`**: Container MySQL (Port `3307:3306`) yang menyimpan seluruh data aplikasi.
-2. **`ta-server-coffeeshop`**: Container backend Spring Boot (Port `8083:8083`) yang terhubung langsung ke container database.
-3. **`ta-ci4-web-coffeeshop`**: Container frontend CodeIgniter 4 (Port `8080:80`) yang melayani antarmuka pelanggan dan berkomunikasi dengan server backend.
+1. **`ta-database-coffeeshop`**: MySQL Container (Port `3307:3306`) storing all application data.
+2. **`ta-server-coffeeshop`**: Spring Boot backend container (Port `8083:8083`) connected directly to the database container.
+3. **`ta-ci4-web-coffeeshop`**: CodeIgniter 4 frontend container (Port `8080:80`) serving the customer interface and communicating with the backend server.
 
-Dengan menggunakan `docker-compose`, seluruh environment dapat dibangun (build) dan dijalankan secara serentak tanpa perlu mengonfigurasi Apache, PHP, Java, atau MySQL secara manual di sistem operasi host.
+Using `docker-compose`, the entire environment can be built and run simultaneously without manually configuring Apache, PHP, Java, or MySQL on the host operating system.
 
-## Panduan Instalasi & Menjalankan Project (menggunakan Docker)
+## Installation & Running Guide (using Docker)
 
-Berikut adalah panduan lengkap menjalankan & mengelola sistem terintegrasi (Web, Server, dan Database) menggunakan **Command Prompt (CMD)** via Docker:
+Here is the complete guide to run and manage the integrated system (Web, Server, and Database) using **Command Prompt (CMD)** via Docker:
 
-### 1. 🚀 Menyalakan Seluruh Sistem
+### 1. 🚀 Start the Entire System
 
-Buka **Command Prompt (CMD)**, lalu ketik perintah ini:
+Open **Command Prompt (CMD)**, then type the following command:
 
 ```cmd
 cd C:\Dokumen
 docker compose up -d --build
 ```
 
-> **Penjelasan Perintah:**
-> - `cd C:\Dokumen` $\rightarrow$ Pindah ke folder lokasi Master Docker.
-> - `up -d` $\rightarrow$ Menyalakan seluruh container di background (agar CMD tidak terkunci).
-> - `--build` $\rightarrow$ Memastikan Docker mem-build versi kode terbaru dari Web & Server Anda.
+> **Command Explanation:**
+> - `cd C:\Dokumen` $\rightarrow$ Navigate to the Docker Master folder location.
+> - `up -d` $\rightarrow$ Start all containers in the background (preventing CMD from locking).
+> - `--build` $\rightarrow$ Ensure Docker builds the latest code version of your Web & Server.
 
-### 2. 📊 Cek Status Container
+### 2. 📊 Check Container Status
 
-Untuk melihat apakah semua container sudah aktif dan berjalan normal:
+To verify if all containers are active and running normally:
 
 ```cmd
 docker compose ps
 ```
-*(Anda akan melihat daftar container `ta-ci4-web-coffeeshop`, `ta-server-coffeeshop`, dan `ta-database-coffeeshop` berserta port-nya)*.
+*(You will see a list of containers: `ta-ci4-web-coffeeshop`, `ta-server-coffeeshop`, and `ta-database-coffeeshop` along with their ports).*
 
-### 3. 📜 Melihat Log Sistem (Real-time)
+### 3. 📜 View System Logs (Real-time)
 
-Jika ingin melihat log aktivitas server (misal saat ada transaksi pesanan masuk):
+To view server activity logs (e.g., when an incoming order transaction occurs):
 
 ```cmd
 docker compose logs -f
 ```
-*(Tekan `Ctrl + C` untuk keluar dari tampilan log)*.
+*(Press `Ctrl + C` to exit the log view)*.
 
-### 4. 🛑 Mematikan Seluruh Sistem
+### 4. 🛑 Shut Down the Entire System
 
-Jika sudah selesai digunakan dan ingin mematikan container:
+When finished and you wish to stop the containers:
 
 ```cmd
 cd C:\Dokumen
@@ -90,45 +90,45 @@ docker compose down
 
 
 
-## Pengujian & Uji Otomatis (Testing)
+## Testing & Automated Testing
 
-Proyek ini dilengkapi dengan skrip pengujian otomatis berbasis **Selenium WebDriver** dan **pytest** untuk menjamin fungsionalitas seluruh alur fitur web (39 skenario uji).
+This project is equipped with automated testing scripts built with Selenium WebDriver and pytest to ensure the functionality of all web features (39 test scenarios).
 
-### Prasyarat Testing
-1. Pastikan Python 3.x telah terpasang pada komputer Anda.
-2. Pasang modul Python yang diperlukan melalui pip:
+### Testing Prerequisites
+1. Ensure Python 3.x is installed on your computer.
+2. Install required Python modules via pip:
    ```bash
    pip install selenium pytest pytest-html
    ```
-3. Pastikan driver browser (seperti ChromeDriver untuk Google Chrome) sesuai dengan versi browser Anda dan sudah terkonfigurasi.
+3. Ensure your browser driver (such as ChromeDriver for Google Chrome) matches your browser version and is properly configured.
 
-### Menjalankan Uji Otomatis
-1. Jalankan aplikasi web CodeIgniter 4 Anda pada port `8081`.
-2. Jalankan perintah berikut melalui terminal:
+### Running Automated Tests
+1. Run your CodeIgniter 4 web application on port `8081`.
+2. Run the following commands through the terminal:
    ```bash
    cd c:/Dokumen/ta-server-coffeeshop/selenium
    pytest test_ci4_web.py -v --html=report_ci4.html --self-contained-html
    ```
-3. Hasil pengujian otomatis akan terekam secara detail dan laporan interaktif akan dibuat pada file `report_ci4.html`.
+3. Automated test results will be recorded in detail, and an interactive report will be generated in the `report_ci4.html` file.
 
 ---
 
-## Dokumentasi & Demo
+## Documentation & Demo
 
-Gunakan kolom di bawah ini untuk menambahkan tangkapan layar (screenshot), animasi GIF, atau video dokumentasi aplikasi Anda.
+Use the table below to view screenshots, animations, or video documentation of your application.
 
-| Fitur | Tampilan Dokumentasi | Deskripsi |
+| Feature | Documentation Preview | Description |
 | --- | --- | --- |
-| **Halaman Beranda** | ![Beranda](documentation/homepage_hero.png) | Halaman utama dengan visualisasi modern hero banner Classic Coffee. |
-| **Tentang Kami** | ![Tentang Kami](documentation/tentang_kami.png) | Halaman informasi profil, dedikasi, dan latar belakang kedai kopi. |
-| **Menu Kami** | ![Menu Kami](documentation/menu_kami.png) | Daftar produk kopi, non-kopi, dan pastry dengan filter dinamis. |
-| **Detail Produk & Keranjang** | ![Detail & Keranjang](documentation/keranjang_belanja.png) | Pop-up detail menu dan pengelolaan item belanja pelanggan. |
-| **Halaman Kontak** | ![Kontak](documentation/halaman_kontak.png) | Formulir saran/masukan pelanggan terintegrasi dengan Google Maps. |
-| **Cuplikan Kode Form Kontak** | ![Cuplikan Kode](documentation/contact_controller_snippet.png) | Potongan kode program PHP Controller CI4 untuk memproses pengiriman saran pelanggan ke database backend. |
-| **QR Code & Detail Pesanan** | ![Halaman Pembayaran](documentation/halaman_pembayaran.png) | Halaman pembayaran yang menampilkan data pesanan dan kode QR. |
-| **Modal Sukses Transaksi** | ![Modal Sukses](documentation/modal_sukses.png) | Floating modal sukses yang muncul setelah kasir mengonfirmasi pesanan. |
-| **Modal Gagal Transaksi** | ![Modal Gagal](documentation/modal_gagal.png) | Floating modal merah "Pesanan Gagal Dikirim!" yang muncul ketika server API tidak dapat dijangkau. |
-| **Laporan Uji Otomatis (Selenium)** | ![Laporan Testing](documentation/pytest_result.png) | Bukti eksekusi uji otomatis menggunakan Selenium yang menunjukkan 39 test case sukses (PASSED). |
-| **Docker Build & Up** | ![Docker Build](documentation/docker_build.png) | Proses kompilasi image dan inisialisasi container secara serentak menggunakan `docker compose up -d --build`. |
-| **Status Container (CLI)** | ![Docker PS](documentation/docker_ps.png) | Verifikasi container yang berjalan (Web, Server, DB) beserta port mapping-nya melalui `docker compose ps`. |
-| **Docker Desktop UI** | ![Docker Desktop](documentation/docker_desktop.png) | Tampilan manajemen visual container, resource usage, dan logs melalui Docker Desktop. |
+| **Homepage** | ![Beranda](documentation/homepage_hero.png) | Main page featuring a modern Classic Coffee hero banner visualization. |
+| **About Us** | ![Tentang Kami](documentation/tentang_kami.png) | Profile, dedication, and coffee shop background information page. |
+| **Our Menu** | ![Menu Kami](documentation/menu_kami.png) | Coffee, non-coffee, and pastry product list with dynamic filters. |
+| **Product Detail & Cart** | ![Detail & Keranjang](documentation/keranjang_belanja.png) | Menu detail pop-up and customer shopping cart management. |
+| **Contact Page** | ![Kontak](documentation/halaman_kontak.png) | Customer feedback/suggestion form integrated with Google Maps. |
+| **Contact Form Code Snippet** | ![Cuplikan Kode](documentation/contact_controller_snippet.png) | CI4 PHP Controller code snippet for processing customer feedback submissions to the backend database. |
+| **QR Code & Order Detail** | ![Halaman Pembayaran](documentation/halaman_pembayaran.png) | Payment page displaying order data and QR code. |
+| **Transaction Success Modal** | ![Modal Sukses](documentation/modal_sukses.png) | Floating success modal appearing after the cashier confirms the order. |
+| **Transaction Failed Modal** | ![Modal Gagal](documentation/modal_gagal.png) | Red floating "Order Failed to Send!" modal appearing when the API server is unreachable. |
+| **Automated Test Report (Selenium)** | ![Laporan Testing](documentation/pytest_result.png) | Automated test execution proof using Selenium showing 39 successful test cases (PASSED). |
+| **Docker Build & Up** | ![Docker Build](documentation/docker_build.png) | Image compilation and simultaneous container initialization process using `docker compose up -d --build`. |
+| **Container Status (CLI)** | ![Docker PS](documentation/docker_ps.png) | Verification of running containers (Web, Server, DB) along with port mappings via `docker compose ps`. |
+| **Docker Desktop UI** | ![Docker Desktop](documentation/docker_desktop.png) | Visual management interface for containers, resource usage, and logs via Docker Desktop. |
