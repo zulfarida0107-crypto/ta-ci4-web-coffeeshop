@@ -2,6 +2,10 @@
 
 Classic Coffee Customer Web — A responsive CodeIgniter 4 web application for customer ordering, featuring product highlights, menu filtering, instant cart management, and dynamic QR Code invoice generation.
 
+## 📺 Demo Video
+
+[![Demo Video Proyek Kedai Kopi](https://img.youtube.com/vi/i2iFWwCDxsc/0.jpg)](https://www.youtube.com/watch?v=i2iFWwCDxsc)
+
 ## Main Features
 
 - **Featured Products & Our Menu:** Clear separation of workflows between archipelago signature coffees and regular menu items.
